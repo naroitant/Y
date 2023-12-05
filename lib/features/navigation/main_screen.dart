@@ -19,8 +19,8 @@ class _MainScreenState extends State<MainScreen> {
     AppRoutes.home,
     AppRoutes.search,
     AppRoutes.video,
+    AppRoutes.cart,
     AppRoutes.profile,
-    AppRoutes.settings,
   ];
 
   int get currentNavigationIndex {
@@ -69,11 +69,11 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             label: '',
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.shopping_bag_outlined),
           ),
           BottomNavigationBarItem(
             label: '',
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.person),
           ),
         ],
       ),
