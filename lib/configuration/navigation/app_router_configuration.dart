@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:y/features/home/home_page.dart';
 import 'package:y/features/navigation/main_screen.dart';
 
+import 'package:y/features/login/login_page.dart';
 import 'app_routes.dart';
 
 class AppRouterConfiguration {
@@ -17,7 +18,7 @@ class AppRouterConfiguration {
             GoRoute(
               name: AppRoutes.home.name,
               path: AppRoutes.home.path,
-              builder: (context, state) => const MyHomePage(),
+              builder: (context, state) => HomePage(),
             ),
             GoRoute(
               name: AppRoutes.search.name,
@@ -30,14 +31,15 @@ class AppRouterConfiguration {
               builder: (context, state) => const Center(child: Text('video')),
             ),
             GoRoute(
-              name: AppRoutes.cart.name,
-              path: AppRoutes.cart.path,
-              builder: (context, state) => const Center(child: Text('cart')),
-            ),
-            GoRoute(
               name: AppRoutes.profile.name,
               path: AppRoutes.profile.path,
-              builder: (context, state) => const Center(child: Text('profile')),
+              //builder: (context, state) => const Center(child: Text('profile'))
+              builder: (context, state) => LoginPage(),
+            ),
+            GoRoute(
+              name: AppRoutes.settings.name,
+              path: AppRoutes.settings.path,
+              builder: (context, state) => const Center(child: Text('settings')),
             ),
           ],
         ),
