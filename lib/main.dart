@@ -6,14 +6,32 @@ import 'package:flutter/material.dart';
 import 'package:y/core/di/app_services.dart';
 
 import 'configuration/environment/environment.dart';
+import 'core/app.dart';
 import 'domain/models/post_preview.dart';
 
-void main() {
+/*void main() {
   runApp(const MyApp());
+}*/
+
+void main() {
+  final appServices = AppServices(
+    dio: Dio(Environment.baseDioOptions),
+  );
+
+  runZonedGuarded(
+        () => runApp(
+      MyApp(
+        appServices: appServices,
+      ),
+    ),
+        (error, stack) {
+      log('$error', stackTrace: stack);
+    },
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+/*class MyApp extends StatelessWidget {
+  const MyApp({super.key, required AppServices appServices});
 
   @override
   Widget build(BuildContext context) {
@@ -73,4 +91,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
+}*/

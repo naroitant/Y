@@ -21,7 +21,7 @@ class _AppRouterWidgetState extends State<AppRouterWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Rugramm',
+      title: 'Y',
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
