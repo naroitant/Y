@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:y/features/home/home_page.dart';
 import 'package:y/features/navigation/main_screen.dart';
 
-import 'package:y/features/login/login_page.dart';
+import 'package:y/features/auth/login_page.dart';
 import 'app_routes.dart';
 
 class AppRouterConfiguration {
@@ -34,7 +34,7 @@ class AppRouterConfiguration {
               name: AppRoutes.profile.name,
               path: AppRoutes.profile.path,
               //builder: (context, state) => const Center(child: Text('profile'))
-              builder: (context, state) => LoginPage(),
+              builder: (context, state) => LoginPage(onTap: () {  },),
             ),
             GoRoute(
               name: AppRoutes.settings.name,
