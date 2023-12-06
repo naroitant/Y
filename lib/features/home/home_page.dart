@@ -1,46 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/posts_cubit.dart';
 import 'widgets/post_preview_card.dart';
 
-//class HomePage extends StatefulWidget {
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
-
-  final user = FirebaseAuth.instance.currentUser!;
-
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
-  }
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: signUserOut,
-            icon: Icon(Icons.logout)
-          )
-        ]
-      ),
-      body: Center(
-        child: Text(
-          "You have successfully logged in as " + user.email!,
-          style: TextStyle(fontSize: 20),
-        )
-      ),
-    );
-  }
-
-  /*@override
-  State<HomePage> createState() => _HomePageState();*/
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-/*
-class _HomePageState extends State<HomePage> {
+class _MyHomePageState extends State<MyHomePage> {
   late final ScrollController scrollController;
   late final PostsCubit postsCubit;
 
@@ -98,4 +69,4 @@ class _HomePageState extends State<HomePage> {
       await postsCubit.nextPage();
     }
   }
-}*/
+}
