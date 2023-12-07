@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/auth/widgets/my_textfield.dart';
+import 'package:y/services/auth_service.dart';
 
 String generateWelcomeMessage() {
   int randomInt = Random().nextInt(5);
@@ -187,11 +188,15 @@ class _LoginPageState extends State<LoginPage> {
                 ),
             
                 const SizedBox(height: 10),
-            
+
+                // The Google Sign-In button.
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SquareTile(imagePath: 'lib/images/google_logo.png'),
+                    SquareTile(
+                      onTap: () => AuthService().signInWithGoogle(),
+                      imagePath: 'lib/images/google_logo.png'
+                    ),
                   ],
                 ),
             
