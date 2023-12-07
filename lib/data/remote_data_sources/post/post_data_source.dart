@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
+
 import 'package:y/data/remote_data_sources/models/list_model.dart'
-    as source_source_list_model;
+  as source_source_list_model;
 import 'package:y/data/remote_data_sources/models/post_preview.dart'
-    as source_post_preview;
+  as source_post_preview;
 import 'package:y/domain/models/list_model.dart';
 import 'package:y/domain/models/post_create.dart';
 import 'package:y/domain/models/post_preview.dart';

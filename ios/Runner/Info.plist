@@ -4,7 +4,7 @@
 <dict>
     <key>GIDClientID</key>
     <string>801492549425-kusi4tfmbdt4vhooqfo7i9a8hg5fbr97.apps.googleusercontent.com</string>
-    <!-- Google Sign-in Section -->
+    <!-- Google Sign-in section -->
     <key>CFBundleURLTypes</key>
     <array>
     	<dict>
@@ -16,7 +16,7 @@
     		</array>
     	</dict>
     </array>
-    <!-- End of the Google Sign-in Section -->
+    <!-- End of the Google Sign-in section -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

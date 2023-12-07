@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'package:y/services/auth_service.dart';
 import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/auth/widgets/my_textfield.dart';
-import 'package:y/services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -20,7 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  // The sign-up method.
+  // Sign-up method.
   void signUserUp() async {
     // Show the loading circle.
     showDialog(
@@ -34,12 +35,24 @@ class _RegisterPageState extends State<RegisterPage> {
 
     // Try signing up.
     if (passwordController.text == confirmPasswordController.text) {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
+
+      // Create a new document in CLoud Firestore.
+      FirebaseFirestore.instance
+        .collection("Users")
+        .doc(userCredential.user!.email)
+        .set({
+        // Initial username.
+          'username' : emailController.text.split('0')[0],
+          'bio' : ''
+        // Add any additional fields as needed.
+      });
+
       // Pop the loading circle.
-      Navigator.pop(context);
+      Navigator.of(context, rootNavigator: true).pop(context);
     } else {
       Navigator.pop(context);
       // Show the error message.
@@ -85,12 +98,15 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 const SizedBox(height: 50),
             
-                // The logo of our application.
-                Image.asset('lib/images/y_logo_black.png', height: 150,),
+                // Application logo.
+                Image.asset(
+                  'lib/images/y_logo_black.png',
+                  height: 150,
+                ),
             
                 const SizedBox(height: 50),
             
-                // The welcome message.
+                // Welcome message.
                 Text(
                   'Let\'s get to know each other!',
                   style: TextStyle(
@@ -101,7 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
             
                 const SizedBox(height: 25),
             
-                // The username text field.
+                // Username text field.
                 MyTextField(
                   controller: emailController,
                   hintText: 'Email',
@@ -110,7 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
             
                 const SizedBox(height: 10),
             
-                // The password text field.
+                // Password text field.
                 MyTextField(
                   controller: passwordController,
                   hintText: 'Password',
@@ -119,7 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 10),
 
-                // The password confirmation text field.
+                // Password confirmation text field.
                 MyTextField(
                   controller: confirmPasswordController,
                   hintText: 'Confirm Password',
@@ -166,13 +182,13 @@ class _RegisterPageState extends State<RegisterPage> {
             
                 const SizedBox(height: 10),
 
-                // The Google logo.
+                // Google Sign-In button.
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SquareTile(
-                        onTap: () => AuthService().signInWithGoogle(),
-                        imagePath: 'lib/images/google_logo.png'
+                      onTap: () => AuthService().signInWithGoogle(),
+                      imagePath: 'lib/images/google_logo.png'
                     ),
                   ],
                 ),
@@ -181,24 +197,24 @@ class _RegisterPageState extends State<RegisterPage> {
             
                 // Sign Up.
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Already have an account?',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(width: 4),
-                      GestureDetector(
-                        onTap: widget.onTap,
-                        child: const Text(
-                          'Sign in now',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold
-                          ),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Already have an account?',
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                    const SizedBox(width: 4),
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: const Text(
+                        'Sign in now',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold
                         ),
                       ),
-                    ]
+                    ),
+                  ]
                 ),
               ],
             ),

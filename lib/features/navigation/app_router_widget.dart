@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:y/configuration/navigation/app_router_configuration.dart';
 
 class AppRouterWidget extends StatefulWidget {

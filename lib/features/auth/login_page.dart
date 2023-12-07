@@ -2,10 +2,10 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'package:y/services/auth_service.dart';
 import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/auth/widgets/my_textfield.dart';
-import 'package:y/services/auth_service.dart';
 
 String generateWelcomeMessage() {
   int randomInt = Random().nextInt(5);
@@ -24,7 +24,7 @@ String generateWelcomeMessage() {
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
-  LoginPage({super.key, required this.onTap});
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // The sign-in method.
+  // Sign-in method.
   void signUserIn() async {
     // Show the loading circle.
     showDialog(
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordController.text,
       );
       // Pop the loading circle.
-      Navigator.pop(context);
+      Navigator.of(context, rootNavigator: true).pop(context);
     } on FirebaseAuthException catch (e) {
       // Pop the loading circle.
       Navigator.pop(context);
@@ -101,12 +101,12 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 const SizedBox(height: 50),
             
-                // The logo of our application.
+                // Application logo.
                 Image.asset('lib/images/y_logo_black.png', height: 150,),
             
                 const SizedBox(height: 50),
             
-                // The welcome message.
+                // Welcome message.
                 Text(
                   generateWelcomeMessage(),
                   style: TextStyle(
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
             
                 const SizedBox(height: 25),
             
-                // The username text field.
+                // Username text field.
                 MyTextField(
                   controller: emailController,
                   hintText: 'Email',
@@ -126,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
             
                 const SizedBox(height: 10),
             
-                // The password text field.
+                // Password text field.
                 MyTextField(
                   controller: passwordController,
                   hintText: 'Password',
@@ -189,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
             
                 const SizedBox(height: 10),
 
-                // The Google Sign-In button.
+                // Google Sign-In button.
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -204,24 +204,24 @@ class _LoginPageState extends State<LoginPage> {
             
                 // Sign Up.
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Not a member?',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(width: 4),
-                      GestureDetector(
-                        onTap: widget.onTap,
-                        child: const Text(
-                          'Register now',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold
-                          ),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Not a member?',
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                    const SizedBox(width: 4),
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: const Text(
+                        'Register now',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold
                         ),
-                      )
-                    ]
+                      ),
+                    )
+                  ]
                 ),
               ],
             ),
