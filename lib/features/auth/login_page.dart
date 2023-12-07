@@ -2,10 +2,10 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'package:y/services/auth_service.dart';
 import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/auth/widgets/my_textfield.dart';
-import 'package:y/services/auth_service.dart';
 
 String generateWelcomeMessage() {
   int randomInt = Random().nextInt(5);
@@ -24,7 +24,7 @@ String generateWelcomeMessage() {
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
-  LoginPage({super.key, required this.onTap});
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordController.text,
       );
       // Pop the loading circle.
-      Navigator.pop(context);
+      Navigator.of(context, rootNavigator: true).pop(context);
     } on FirebaseAuthException catch (e) {
       // Pop the loading circle.
       Navigator.pop(context);
@@ -204,24 +204,24 @@ class _LoginPageState extends State<LoginPage> {
             
                 // Sign Up.
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Not a member?',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(width: 4),
-                      GestureDetector(
-                        onTap: widget.onTap,
-                        child: const Text(
-                          'Register now',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold
-                          ),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Not a member?',
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                    const SizedBox(width: 4),
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: const Text(
+                        'Register now',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold
                         ),
-                      )
-                    ]
+                      ),
+                    )
+                  ]
                 ),
               ],
             ),

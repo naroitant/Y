@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import 'package:y/features/auth/auth_page.dart';
 import 'package:y/features/home/home_page.dart';
 import 'package:y/features/navigation/main_screen.dart';
-
-import 'package:y/features/auth/login_page.dart';
 import 'app_routes.dart';
 
 class AppRouterConfiguration {
   static GoRouter createRouter(BuildContext appContext) {
     return GoRouter(
-      initialLocation: AppRoutes.home.path,
+      initialLocation: AppRoutes.auth.path,
       routes: [
         ShellRoute(
           builder: (context, state, pageWidget) =>
-              MainScreen(child: pageWidget),
+            MainScreen(child: pageWidget),
           routes: [
             GoRoute(
               name: AppRoutes.home.name,
               path: AppRoutes.home.path,
-              builder: (context, state) => HomePage(),
+              builder: (context, state) => const HomePage(),
+            ),
+            GoRoute(
+              name: AppRoutes.auth.name,
+              path: AppRoutes.auth.path,
+              builder: (context, state) => const AuthPage(),
             ),
             GoRoute(
               name: AppRoutes.search.name,
@@ -33,8 +38,7 @@ class AppRouterConfiguration {
             GoRoute(
               name: AppRoutes.profile.name,
               path: AppRoutes.profile.path,
-              //builder: (context, state) => const Center(child: Text('profile'))
-              builder: (context, state) => LoginPage(onTap: () {  },),
+              builder: (context, state) => const Center(child: Text('profile'))
             ),
             GoRoute(
               name: AppRoutes.settings.name,

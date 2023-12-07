@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:y/domain/models/user_preview.dart';
 
 class PostPreview extends Equatable {

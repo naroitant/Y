@@ -2,6 +2,9 @@ class AppRoutes {
   // Home
   static const home = (name: 'home', path: '/home');
 
+  // Auth
+  static const auth = (name: 'auth', path: '/auth');
+
   // Search
   static const search = (name: 'search', path: '/search');
 
