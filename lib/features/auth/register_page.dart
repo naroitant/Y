@@ -5,6 +5,7 @@ import 'package:y/services/auth_service.dart';
 import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/auth/widgets/my_textfield.dart';
+import 'package:y/services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
