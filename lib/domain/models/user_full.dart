@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:y/domain/models/location.dart';
 
 class UserFull extends Equatable {

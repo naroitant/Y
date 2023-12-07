@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'package:y/data/remote_data_sources/models/user_preview.dart';
 import 'package:y/domain/models/post_preview.dart' as domain;
 

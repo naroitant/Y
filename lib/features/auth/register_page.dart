@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'package:y/services/auth_service.dart';
 import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/auth/widgets/my_textfield.dart';
-import 'package:y/services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -39,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
         password: passwordController.text,
       );
       // Pop the loading circle.
-      Navigator.pop(context);
+      Navigator.of(context, rootNavigator: true).pop(context);
     } else {
       Navigator.pop(context);
       // Show the error message.
@@ -181,24 +181,24 @@ class _RegisterPageState extends State<RegisterPage> {
             
                 // Sign Up.
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Already have an account?',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(width: 4),
-                      GestureDetector(
-                        onTap: widget.onTap,
-                        child: const Text(
-                          'Sign in now',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold
-                          ),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Already have an account?',
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                    const SizedBox(width: 4),
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: const Text(
+                        'Sign in now',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold
                         ),
                       ),
-                    ]
+                    ),
+                  ]
                 ),
               ],
             ),
