@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,11 +14,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late final ScrollController scrollController;
   late final PostsCubit postsCubit;
-  final user = FirebaseAuth.instance.currentUser!;
-
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
-  }
 
   @override
   void initState() {
@@ -37,14 +31,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: signUserOut,
-              icon: const Icon(Icons.logout)
-          ),
-        ]
-      ),
       body: BlocBuilder<PostsCubit, PostsState>(
         bloc: postsCubit,
         builder: (context, state) {

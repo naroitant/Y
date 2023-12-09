@@ -14,9 +14,13 @@ class _ProfilePageState extends State<ProfilePage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final usersCollection = FirebaseFirestore.instance.collection('Users');
 
+  void signUserOut() {
+    FirebaseAuth.instance.signOut();
+  }
+
   // Edit field.
-  Future<void> editField(String field) async {
-    String newValue = '';
+  Future<void> editField(String field, String text) async {
+    String newValue = text;
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -25,7 +29,8 @@ class _ProfilePageState extends State<ProfilePage> {
           'Edit $field',
           style: const TextStyle(color: Colors.white),
         ),
-        content: TextField(
+        content: TextFormField(
+          initialValue: newValue,
           autofocus: true,
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
@@ -71,6 +76,12 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: signUserOut,
+            icon: const Icon(Icons.logout)
+          ),
+        ],
         title: const Text(
           'Your Profile',
           style: TextStyle(color: Colors.white),
@@ -118,16 +129,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 // User name.
                 MyTextBox(
-                  text: userData['username'],
                   sectionName: 'username',
-                  onPressed: () => editField('username'),
+                  text: userData['username'],
+                  onPressed: () => editField('username', userData['username']),
                 ),
 
                 // User bio.
                 MyTextBox(
-                  text: userData['bio'],
                   sectionName: 'bio',
-                  onPressed: () => editField('bio'),
+                  text: userData['bio'],
+                  onPressed: () => editField('bio', userData['bio']),
                 ),
               ]
             );
@@ -136,6 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Text('Error${snapshot.error}'),
             );
           }
+
           return const Center(
             child: CircularProgressIndicator(),
           );
