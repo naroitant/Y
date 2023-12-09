@@ -1,26 +1,12 @@
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:y/features/auth/widgets/invalid_credential_message.dart';
 
 import 'package:y/services/auth_service.dart';
 import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
-import 'package:y/features/auth/widgets/my_textfield.dart';
-
-String generateWelcomeMessage() {
-  int randomInt = Random().nextInt(5);
-  String welcomeMessage;
-
-  if (randomInt == 1) {
-    welcomeMessage = "y tho?";
-  } else if (randomInt == 2) {
-    welcomeMessage = "уъу";
-  } else {
-    welcomeMessage = "Welcome back!";
-  }
-
-  return welcomeMessage;
-}
+import 'package:y/features/auth/widgets/my_text_field.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -31,11 +17,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Text editing controllers.
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // Sign-in method.
   void signUserIn() async {
     // Show the loading circle.
     showDialog(
@@ -56,37 +40,16 @@ class _LoginPageState extends State<LoginPage> {
       // Pop the loading circle.
       Navigator.of(context, rootNavigator: true).pop(context);
     } on FirebaseAuthException catch (e) {
-      // Pop the loading circle.
-      Navigator.pop(context);
+      if (emailController.text == '' || passwordController.text == '') {
+        Navigator.of(context, rootNavigator: true).pop(context);
+        invalidCredentialMessage('One or more fields are not filled.', context);
+      }
       if (e.code == 'invalid-credential') {
-        invalidCredentialMessage('Invalid email or password.');
+        // Pop the loading circle.
+        Navigator.of(context, rootNavigator: true).pop(context);
+        invalidCredentialMessage('Invalid email or password.', context);
       }
     }
-  }
-
-  // Show the error to the user.
-  void invalidCredentialMessage(String text) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title:
-            Center(
-              child: Text(
-                text,
-              ),
-            ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            )
-          ],
-        );
-      }
-    );
   }
 
   @override
@@ -105,8 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                 Image.asset('lib/images/y_logo_black.png', height: 150,),
             
                 const SizedBox(height: 50),
-            
-                // Welcome message.
+
                 Text(
                   generateWelcomeMessage(),
                   style: TextStyle(
@@ -116,8 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
             
                 const SizedBox(height: 25),
-            
-                // Username text field.
+
                 MyTextField(
                   controller: emailController,
                   hintText: 'Email',
@@ -125,8 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
             
                 const SizedBox(height: 10),
-            
-                // Password text field.
+
                 MyTextField(
                   controller: passwordController,
                   hintText: 'Password',
@@ -135,7 +95,6 @@ class _LoginPageState extends State<LoginPage> {
             
                 const SizedBox(height: 4),
 
-                // Forgot your password?
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -150,8 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
             
                 const SizedBox(height: 10),
-            
-                // Sign In.
+
                 MyButton(
                   text: 'Sign In',
                   onTap: signUserIn,
@@ -189,7 +147,6 @@ class _LoginPageState extends State<LoginPage> {
             
                 const SizedBox(height: 10),
 
-                // Google Sign-In button.
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -201,8 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
             
                 const SizedBox(height: 10),
-            
-                // Sign Up.
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -229,5 +185,20 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  String generateWelcomeMessage() {
+    int randomInt = Random().nextInt(5);
+    String welcomeMessage;
+
+    if (randomInt == 1) {
+      welcomeMessage = "y tho?";
+    } else if (randomInt == 2) {
+      welcomeMessage = "уъу";
+    } else {
+      welcomeMessage = "Welcome back!";
+    }
+
+    return welcomeMessage;
   }
 }

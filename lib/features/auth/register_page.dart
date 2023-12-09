@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:y/features/auth/widgets/invalid_credential_message.dart';
 
 import 'package:y/services/auth_service.dart';
 import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
-import 'package:y/features/auth/widgets/my_textfield.dart';
+import 'package:y/features/auth/widgets/my_text_field.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -16,12 +17,11 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  // Text editing controllers.
+  final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  // Sign-up method.
   void signUserUp() async {
     // Show the loading circle.
     showDialog(
@@ -33,6 +33,12 @@ class _RegisterPageState extends State<RegisterPage> {
       },
     );
 
+    if (usernameController.text == '' || emailController.text == '' ||
+        passwordController.text == '' || confirmPasswordController.text == '') {
+      Navigator.of(context, rootNavigator: true).pop(context);
+      invalidCredentialMessage('One or more fields are not filled.', context);
+    }
+
     // Try signing up.
     if (passwordController.text == confirmPasswordController.text) {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -40,50 +46,21 @@ class _RegisterPageState extends State<RegisterPage> {
         password: passwordController.text,
       );
 
-      // Create a new document in CLoud Firestore.
+      // Create a new document with user data in Cloud Firestore.
       FirebaseFirestore.instance
         .collection("Users")
         .doc(userCredential.user!.email)
         .set({
-        // Initial username.
-          'username' : emailController.text.split('0')[0],
+          'username' : usernameController.text.split('0')[0],
           'bio' : ''
-        // Add any additional fields as needed.
-      });
-
+        });
       // Pop the loading circle.
       Navigator.of(context, rootNavigator: true).pop(context);
     } else {
-      Navigator.pop(context);
-      // Show the error message.
-      invalidCredentialMessage('The passwords do not match.');
+      // Pop the loading circle.
+      Navigator.of(context, rootNavigator: true).pop(context);
+      invalidCredentialMessage('The passwords do not match.', context);
     }
-  }
-
-  // Show the error to the user.
-  void invalidCredentialMessage(String text) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title:
-            Center(
-              child:
-                Text(
-                  text,
-                ),
-            ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            )
-          ],
-        );
-      }
-    );
   }
 
   @override
@@ -105,8 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
             
                 const SizedBox(height: 50),
-            
-                // Welcome message.
+
                 Text(
                   'Let\'s get to know each other!',
                   style: TextStyle(
@@ -114,10 +90,17 @@ class _RegisterPageState extends State<RegisterPage> {
                     fontSize: 16,
                   ),
                 ),
-            
+
                 const SizedBox(height: 25),
-            
-                // Username text field.
+
+                MyTextField(
+                  controller: usernameController,
+                  hintText: 'Username',
+                  obscureText: false,
+                ),
+
+                const SizedBox(height: 10),
+
                 MyTextField(
                   controller: emailController,
                   hintText: 'Email',
@@ -125,8 +108,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
             
                 const SizedBox(height: 10),
-            
-                // Password text field.
+
                 MyTextField(
                   controller: passwordController,
                   hintText: 'Password',
@@ -135,7 +117,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 10),
 
-                // Password confirmation text field.
                 MyTextField(
                   controller: confirmPasswordController,
                   hintText: 'Confirm Password',
@@ -143,8 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
             
                 const SizedBox(height: 20),
-            
-                // Sign In.
+
                 MyButton(
                   text: 'Sign Up',
                   onTap: signUserUp,
@@ -182,7 +162,6 @@ class _RegisterPageState extends State<RegisterPage> {
             
                 const SizedBox(height: 10),
 
-                // Google Sign-In button.
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -194,8 +173,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
 
                 const SizedBox(height: 10),
-            
-                // Sign Up.
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

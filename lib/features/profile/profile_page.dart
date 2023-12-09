@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:y/features/profile/widgets/text_box.dart';
+import 'package:y/features/profile/widgets/text_box_editable.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,12 +18,29 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final usersCollection = FirebaseFirestore.instance.collection('Users');
+  PlatformFile? pickedFile;
+  UploadTask? uploadTask;
 
   void signUserOut() {
     FirebaseAuth.instance.signOut();
   }
 
-  // Edit field.
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null) return;
+
+    setState(() {
+      pickedFile = result.files.first;
+    });
+  }
+
+  Future uploadFile() async {
+    final path = 'profile_pictures/${pickedFile!.name}';
+    final file = File(pickedFile!.path!);
+    final ref = FirebaseStorage.instance.ref().child(path);
+    uploadTask = ref.putFile(file);
+  }
+
   Future<void> editField(String field, String text) async {
     String newValue = text;
     await showDialog(
@@ -42,7 +64,6 @@ class _ProfilePageState extends State<ProfilePage> {
           },
         ),
         actions: [
-          // Cancel button.
           TextButton(
             child:
               const Text(
@@ -51,7 +72,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             onPressed: () => Navigator.pop(context),
           ),
-          // Save button.
           TextButton(
             child:
               const Text(
@@ -64,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
 
-    // Update in Firestore.
+    // Update user data in Cloud Firestore.
     if (newValue.trim().isNotEmpty) {
       // Only update if there is something in the text field.
       await usersCollection.doc(currentUser.email).update({field: newValue});
@@ -79,11 +99,12 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           IconButton(
             onPressed: signUserOut,
-            icon: const Icon(Icons.logout)
+            icon: const Icon(Icons.logout),
+            color: Colors.white,
           ),
         ],
         title: const Text(
-          'Your Profile',
+          'Profile Info',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.grey[900],
@@ -101,41 +122,28 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 const SizedBox(height: 50),
 
-                // Profile picture.
-                const Icon(
-                  Icons.person,
-                  size: 72,
+                IconButton(
+                  onPressed: signUserOut,
+                  icon: const Icon(Icons.person),
+                  color: Colors.white,
+                  iconSize: 144,
                 ),
 
                 const SizedBox(height: 50),
 
-                // User email.
-                Text(
-                  currentUser.email!,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey[700]),
+                TextBox(
+                  sectionName: 'email',
+                  text: currentUser.email!,
+                  onPressed: () => editField('email', userData['email']),
                 ),
 
-                const SizedBox(height: 50),
-
-                // Profile details.
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0),
-                  child: Text(
-                    'My Details',
-                    style: TextStyle(color: Colors.grey[600]),
-                  ),
-                ),
-
-                // User name.
-                MyTextBox(
+                TextBoxEditable(
                   sectionName: 'username',
                   text: userData['username'],
                   onPressed: () => editField('username', userData['username']),
                 ),
 
-                // User bio.
-                MyTextBox(
+                TextBoxEditable(
                   sectionName: 'bio',
                   text: userData['bio'],
                   onPressed: () => editField('bio', userData['bio']),

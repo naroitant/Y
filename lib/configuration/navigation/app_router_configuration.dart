@@ -41,7 +41,6 @@ class AppRouterConfiguration {
               name: AppRoutes.profile.name,
               path: AppRoutes.profile.path,
               builder: (context, state) => const AuthOrProfilePage(),
-              // builder: (context, state) => const ProfilePage(),
             ),
             GoRoute(
               name: AppRoutes.settings.name,

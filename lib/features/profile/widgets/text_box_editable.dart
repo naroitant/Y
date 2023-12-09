@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class TextBox extends StatelessWidget {
+class TextBoxEditable extends StatelessWidget {
   final String text;
   final String sectionName;
   final void Function()? onPressed;
-  const TextBox({
+  const TextBoxEditable({
     super.key,
     required this.text,
     required this.sectionName,
@@ -35,7 +35,7 @@ class TextBox extends StatelessWidget {
               IconButton(
                 onPressed: onPressed,
                 icon: Icon(
-                  Icons.lock,
+                  Icons.edit,
                   color: Colors.grey[400],
                 )
               ),
