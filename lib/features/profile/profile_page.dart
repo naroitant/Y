@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:y/features/auth/auth_or_home_page.dart';
+import 'package:y/features/home/home_page.dart';
 import 'package:y/features/profile/widgets/text_box.dart';
 import 'package:y/features/profile/widgets/text_box_editable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -23,6 +25,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void signUserOut() {
     FirebaseAuth.instance.signOut();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AuthOrHomePage()),
+    );
   }
 
   Future selectFile() async {

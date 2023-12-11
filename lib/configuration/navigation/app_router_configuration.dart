@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:y/features/auth/auth_or_home_page.dart';
 import 'package:y/features/home/home_page.dart';
 import 'package:y/features/navigation/main_screen.dart';
-import 'package:y/features/profile/auth_or_profile_page.dart';
 
 import 'package:y/configuration/navigation/app_routes.dart';
+import 'package:y/features/profile/profile_page.dart';
 
 class AppRouterConfiguration {
   static GoRouter createRouter(BuildContext appContext) {
@@ -40,7 +40,7 @@ class AppRouterConfiguration {
             GoRoute(
               name: AppRoutes.profile.name,
               path: AppRoutes.profile.path,
-              builder: (context, state) => const AuthOrProfilePage(),
+              builder: (context, state) => const ProfilePage(),
             ),
             GoRoute(
               name: AppRoutes.settings.name,

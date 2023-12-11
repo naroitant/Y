@@ -5,6 +5,9 @@ class AppRoutes {
   // Auth
   static const auth = (name: 'auth', path: '/auth');
 
+  // AuthOrHome
+  static const authOrHome = (name: 'auth_or_home', path: '/auth_or_home');
+
   // Search
   static const search = (name: 'search', path: '/search');
 

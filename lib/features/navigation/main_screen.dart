@@ -25,17 +25,11 @@ class _MainScreenState extends State<MainScreen> {
     AppRoutes.settings,
   ];
 
-  int get currentNavigationIndex {
-    final location = GoRouterState.of(context).uri.path;
-    final index = navigationRoutes.indexWhere(
-      (element) => location.startsWith(element.path),
-    );
+  int _currentIndex = 0;
 
-    if (index.isNegative) {
-      return 0;
-    }
-
-    return index;
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -59,8 +53,15 @@ class _MainScreenState extends State<MainScreen> {
                 unselectedIconTheme: IconThemeData(
                   color: Colors.black.withOpacity(0.5),
                 ),
-                currentIndex: currentNavigationIndex,
-                onTap: onChangePage,
+                currentIndex: _currentIndex,
+                onTap:
+                  (int index) {
+                    setState(() {
+                      _currentIndex = index;
+                      context.goNamed(navigationRoutes[index].name);
+                    });
+                  },
+                // onTap: onChangePage,
                 items: const [
                   BottomNavigationBarItem(
                     label: '',
@@ -88,8 +89,8 @@ class _MainScreenState extends State<MainScreen> {
           }
           // If the user is not logged in.
           else {
+            _currentIndex = 0;
             return Scaffold(
-              backgroundColor: const Color(0xfff9f9f9),
               body: SafeArea(
                 child: widget.child,
               ),
