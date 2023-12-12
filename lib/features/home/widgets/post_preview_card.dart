@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:y/domain/models/post_preview.dart';
-import 'package:y/ui/components/cached_network_image_component.dart';
 
-import 'post_preview_info.dart';
-import 'user_preview_header.dart';
+import 'package:y/domain/models/post_preview.dart';
+import 'package:y/features/home/widgets/post_preview_info.dart';
+import 'package:y/features/home/widgets/user_preview_header.dart';
+import 'package:y/ui/components/cached_network_image_component.dart';
 
 class PostPreviewCard extends StatelessWidget {
   final PostPreview postPreview;

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:y/configuration/navigation/app_routes.dart';
 import 'package:y/features/auth/auth_or_home_page.dart';
 import 'package:y/features/home/home_page.dart';
 import 'package:y/features/navigation/main_screen.dart';
-
-import 'package:y/configuration/navigation/app_routes.dart';
 import 'package:y/features/profile/profile_page.dart';
 
 class AppRouterConfiguration {

@@ -1,12 +1,12 @@
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:y/features/auth/widgets/invalid_credential_message.dart';
 
-import 'package:y/services/auth_service.dart';
 import 'package:y/features/auth/widgets/my_button.dart';
-import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/auth/widgets/my_text_field.dart';
+import 'package:y/features/auth/widgets/square_tile.dart';
+import 'package:y/features/widgets/display_error_message.dart';
+import 'package:y/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -42,12 +42,12 @@ class _LoginPageState extends State<LoginPage> {
     } on FirebaseAuthException catch (e) {
       if (emailController.text == '' || passwordController.text == '') {
         Navigator.of(context, rootNavigator: true).pop(context);
-        invalidCredentialMessage('One or more fields are not filled.', context);
+        displayErrorMessage('One or more fields are not filled.', context);
       }
       if (e.code == 'invalid-credential') {
         // Pop the loading circle.
         Navigator.of(context, rootNavigator: true).pop(context);
-        invalidCredentialMessage('Invalid email or password.', context);
+        displayErrorMessage('Invalid email or password.', context);
       }
     }
   }

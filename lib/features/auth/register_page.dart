@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:y/features/auth/widgets/invalid_credential_message.dart';
 
-import 'package:y/services/auth_service.dart';
 import 'package:y/features/auth/widgets/my_button.dart';
-import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/auth/widgets/my_text_field.dart';
+import 'package:y/features/auth/widgets/square_tile.dart';
+import 'package:y/features/widgets/display_error_message.dart';
+import 'package:y/services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -36,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (usernameController.text == '' || emailController.text == '' ||
         passwordController.text == '' || confirmPasswordController.text == '') {
       Navigator.of(context, rootNavigator: true).pop(context);
-      invalidCredentialMessage('One or more fields are not filled.', context);
+      displayErrorMessage('One or more fields are not filled.', context);
     }
 
     // Try signing up.
@@ -52,14 +52,15 @@ class _RegisterPageState extends State<RegisterPage> {
         .doc(userCredential.user!.email)
         .set({
           'username' : usernameController.text.split('0')[0],
-          'bio' : ''
+          'bio' : '',
+          'imageURL' : 'https://firebasestorage.googleapis.com/v0/b/y-app-afbd6.appspot.com/o/profile_pictures%2F1702467523950?alt=media&token=ac4698e3-594a-4424-8b4b-9fc961d9c750',
         });
       // Pop the loading circle.
       Navigator.of(context, rootNavigator: true).pop(context);
     } else {
       // Pop the loading circle.
       Navigator.of(context, rootNavigator: true).pop(context);
-      invalidCredentialMessage('The passwords do not match.', context);
+      displayErrorMessage('The passwords do not match.', context);
     }
   }
 

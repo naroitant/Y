@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:y/domain/models/user_preview.dart' as domain;
-
 part 'user_preview.freezed.dart';
 part 'user_preview.g.dart';
 

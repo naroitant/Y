@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
-
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 
-import 'configuration/environment/environment.dart';
-import 'core/app.dart';
+import 'package:y/configuration/environment/environment.dart';
+import 'package:y/core/app.dart';
 import 'package:y/core/di/app_services.dart';
 
 void main() async {

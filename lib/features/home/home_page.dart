@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/posts_cubit.dart';
-import 'widgets/post_preview_card.dart';
+import 'package:y/features/home/bloc/posts_cubit.dart';
+import 'package:y/features/home/widgets/post_preview_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

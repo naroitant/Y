@@ -1,14 +1,15 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:y/features/auth/auth_or_home_page.dart';
-import 'package:y/features/home/home_page.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:y/features/profile/widgets/text_box.dart';
 import 'package:y/features/profile/widgets/text_box_editable.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:y/features/widgets/display_error_message.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -22,13 +23,11 @@ class _ProfilePageState extends State<ProfilePage> {
   final usersCollection = FirebaseFirestore.instance.collection('Users');
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
+  String imageUrl = '';
 
   void signUserOut() {
     FirebaseAuth.instance.signOut();
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AuthOrHomePage()),
-    );
+    context.go('/auth');
   }
 
   Future selectFile() async {
@@ -48,7 +47,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> editField(String field, String text) async {
-    String newValue = text;
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -58,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
           style: const TextStyle(color: Colors.white),
         ),
         content: TextFormField(
-          initialValue: newValue,
+          initialValue: text,
           autofocus: true,
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
@@ -66,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
             hintStyle: const TextStyle(color: Colors.grey),
           ),
           onChanged: (value) {
-            newValue = value;
+            text = value;
           },
         ),
         actions: [
@@ -84,16 +82,24 @@ class _ProfilePageState extends State<ProfilePage> {
                 'Save',
                 style: TextStyle(color: Colors.white),
               ),
-            onPressed: () => Navigator.of(context).pop(newValue),
+            onPressed: () => Navigator.of(context).pop(text),
           ),
         ]
       ),
     );
 
     // Update user data in Cloud Firestore.
-    if (newValue.trim().isNotEmpty) {
+    if (text.trim().isNotEmpty) {
       // Only update if there is something in the text field.
-      await usersCollection.doc(currentUser.email).update({field: newValue});
+      await usersCollection.doc(currentUser.email).update({field: text});
+    }
+  }
+
+  Future<void> editPicture(String url) async {
+    // Update user data in Cloud Firestore.
+    if (url.trim().isNotEmpty) {
+      // Only update if there is something in the text field.
+      await usersCollection.doc(currentUser.email).update({'imageURL': url});
     }
   }
 
@@ -106,14 +112,9 @@ class _ProfilePageState extends State<ProfilePage> {
           IconButton(
             onPressed: signUserOut,
             icon: const Icon(Icons.logout),
-            color: Colors.white,
+            color: Colors.black,
           ),
         ],
-        title: const Text(
-          'Profile Info',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.grey[900],
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -128,11 +129,59 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 const SizedBox(height: 50),
 
-                IconButton(
-                  onPressed: signUserOut,
-                  icon: const Icon(Icons.person),
-                  color: Colors.white,
-                  iconSize: 144,
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black.withOpacity(0.6), width: 2),
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    onPressed: () async {
+                      ImagePicker imagePicker = ImagePicker();
+                      XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+
+                      if (file == null) return;
+                      String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+
+                      // Get a reference to the storage root.
+                      Reference referenceRoot = FirebaseStorage.instance.ref();
+                      Reference referenceDirImages = referenceRoot.child('profile_pictures');
+
+                      // Create a reference for the image which is to be uploaded.
+                      Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
+
+                      try {
+                        // Store the file.
+                        await referenceImageToUpload.putFile(File(file.path));
+                        // Get the download URL on success.
+                        imageUrl = await referenceImageToUpload.getDownloadURL();
+                      } catch (error) {
+                        if (imageUrl.isEmpty) {
+                          displayErrorMessage('Please select an image.', context);
+                        }
+                      }
+                    },
+                    icon: Image.network(imageUrl, height: 150),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                Text(
+                  userData['username'],
+                  style: const TextStyle(
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+
+                const SizedBox(height: 20),
+
+                ElevatedButton(
+                  onPressed: () async {
+                    editPicture(imageUrl);
+                  },
+                  child: const Text("Submit")
                 ),
 
                 const SizedBox(height: 50),
