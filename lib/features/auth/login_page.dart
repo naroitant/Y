@@ -6,6 +6,7 @@ import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/my_text_field.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/widgets/display_error_message.dart';
+import 'package:y/features/widgets/display_loading_circle.dart';
 import 'package:y/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,15 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
 
   void signUserIn() async {
-    // Show the loading circle.
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
+    displayLoadingCircle(context);
 
     // Try signing in.
     try {
@@ -41,12 +34,15 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.of(context, rootNavigator: true).pop(context);
     } on FirebaseAuthException catch (e) {
       if (emailController.text == '' || passwordController.text == '') {
+        // Pop the loading circle.
         Navigator.of(context, rootNavigator: true).pop(context);
+
         displayErrorMessage('One or more fields are not filled.', context);
       }
       if (e.code == 'invalid-credential') {
         // Pop the loading circle.
         Navigator.of(context, rootNavigator: true).pop(context);
+
         displayErrorMessage('Invalid email or password.', context);
       }
     }

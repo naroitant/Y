@@ -6,6 +6,7 @@ import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/my_text_field.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/widgets/display_error_message.dart';
+import 'package:y/features/widgets/display_loading_circle.dart';
 import 'package:y/services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -22,45 +23,51 @@ class _RegisterPageState extends State<RegisterPage> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  final alphabetic = RegExp(r'^[a-zA-Z]+$');
+
   void signUserUp() async {
-    // Show the loading circle.
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
+    displayLoadingCircle(context);
 
     if (usernameController.text == '' || emailController.text == '' ||
         passwordController.text == '' || confirmPasswordController.text == '') {
+      // Pop the loading circle.
       Navigator.of(context, rootNavigator: true).pop(context);
+
       displayErrorMessage('One or more fields are not filled.', context);
     }
 
     // Try signing up.
     if (passwordController.text == confirmPasswordController.text) {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+      // Check if the username contains alphabetic symbols only.
+      if (alphabetic.hasMatch(usernameController.text)) {
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
 
-      // Create a new document with user data in Cloud Firestore.
-      FirebaseFirestore.instance
-        .collection("Users")
-        .doc(userCredential.user!.email)
-        .set({
-          'username' : usernameController.text.split('0')[0],
-          'bio' : '',
-          'imageURL' : 'https://firebasestorage.googleapis.com/v0/b/y-app-afbd6.appspot.com/o/profile_pictures%2F1702467523950?alt=media&token=ac4698e3-594a-4424-8b4b-9fc961d9c750',
-        });
-      // Pop the loading circle.
-      Navigator.of(context, rootNavigator: true).pop(context);
+        // Create a new document with user data in Cloud Firestore.
+        FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userCredential.user!.email)
+          .set({
+            'username' : usernameController.text.split('0')[0],
+            'bio' : '',
+            'imageUrl' : 'https://firebasestorage.googleapis.com/v0/b/y-app-afbd6.appspot.com/o/profile_pictures%2F1702467523950?alt=media&token=ac4698e3-594a-4424-8b4b-9fc961d9c750',
+          });
+
+        // Pop the loading circle.
+        Navigator.of(context, rootNavigator: true).pop(context);
+      } else {
+        // Pop the loading circle.
+        Navigator.of(context, rootNavigator: true).pop(context);
+
+        displayErrorMessage('Username must include alphabetic symbols only.', context);
+      }
     } else {
       // Pop the loading circle.
       Navigator.of(context, rootNavigator: true).pop(context);
-      displayErrorMessage('The passwords do not match.', context);
+
+      displayErrorMessage('Passwords do not match.', context);
     }
   }
 

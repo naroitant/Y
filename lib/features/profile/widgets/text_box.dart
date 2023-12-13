@@ -1,49 +1,37 @@
 import 'package:flutter/material.dart';
 
 class TextBox extends StatelessWidget {
-  final String text;
+  final controller;
   final String sectionName;
-  final void Function()? onPressed;
   const TextBox({
     super.key,
-    required this.text,
+    required this.controller,
     required this.sectionName,
-    required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-      ),
-      padding: const EdgeInsets.only(left: 15, bottom: 15),
-      margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Section name.
-              Text(
-                sectionName,
-                style: TextStyle(color: Colors.grey[500]),
-              ),
-
-              // Edit button.
-              IconButton(
-                onPressed: onPressed,
-                icon: Icon(
-                  Icons.lock,
-                  color: Colors.grey[400],
-                )
-              ),
-            ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Section name.
+        Text(
+          sectionName,
+          style: TextStyle(color: Colors.grey[700]),
+        ),
+        // Text.
+        TextField(
+          decoration: const InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            contentPadding: EdgeInsets.all(10),
+            border: OutlineInputBorder(),
           ),
-          // Text.
-          Text(text),
-        ]),
+          controller: controller,
+          style: const TextStyle(fontSize: 16),
+          readOnly: true,
+        ),
+      ]
     );
   }
 }
