@@ -20,27 +20,19 @@ class StoreData {
     return downloadUrl;
   }
 
-  Future<String> saveData({
+  Future<void> saveData({
     required String username,
     required String bio,
     required Uint8List file,
-
   }) async {
-    String resp = 'Some Error Occurred';
-    try {
-      if (username.isNotEmpty && file.isNotEmpty) {
-        String imageUrl = await uploadImageToStorage('profile_pictures', file);
+    if (username.isNotEmpty && file.isNotEmpty) {
+      String imageUrl = await uploadImageToStorage('profile_pictures', file);
 
-        await usersCollection.doc(currentUser.email).update({
-          'username' : username,
-          'bio' : bio,
-          'imageUrl' : imageUrl,
-        });
-        resp = 'success';
-      }
-    } catch (e) {
-      resp = e.toString();
+      await usersCollection.doc(currentUser.email).update({
+        'username' : username,
+        'bio' : bio,
+        'imageUrl' : imageUrl,
+      });
     }
-    return resp;
   }
 }

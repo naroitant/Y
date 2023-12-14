@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/my_text_field.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/widgets/display_error_message.dart';
 import 'package:y/features/widgets/display_loading_circle.dart';
-import 'package:y/services/auth_service.dart';
+import 'package:y/features/auth/widgets/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -28,32 +29,35 @@ class _RegisterPageState extends State<RegisterPage> {
   void signUserUp() async {
     displayLoadingCircle(context);
 
-    if (usernameController.text == '' || emailController.text == '' ||
-        passwordController.text == '' || confirmPasswordController.text == '') {
+    if (usernameController.text.isEmpty || emailController.text.isEmpty ||
+        passwordController.text.isEmpty || confirmPasswordController.text.isEmpty) {
       // Pop the loading circle.
       Navigator.of(context, rootNavigator: true).pop(context);
 
-      displayErrorMessage('One or more fields are not filled.', context);
-    }
-
+      displayErrorMessage(
+        AppLocalizations.of(context)!.oneOrMoreFieldsAreNotFilled,
+        context,
+      );
+    } else
     // Try signing up.
     if (passwordController.text == confirmPasswordController.text) {
       // Check if the username contains alphabetic symbols only.
       if (alphabetic.hasMatch(usernameController.text)) {
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential = await FirebaseAuth.instance.
+            createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
 
         // Create a new document with user data in Cloud Firestore.
         FirebaseFirestore.instance
-          .collection("Users")
-          .doc(userCredential.user!.email)
-          .set({
-            'username' : usernameController.text.split('0')[0],
-            'bio' : '',
-            'imageUrl' : 'https://firebasestorage.googleapis.com/v0/b/y-app-afbd6.appspot.com/o/profile_pictures%2F1702467523950?alt=media&token=ac4698e3-594a-4424-8b4b-9fc961d9c750',
-          });
+            .collection("Users")
+            .doc(userCredential.user!.email)
+            .set({
+          'username' : usernameController.text.split('0')[0],
+          'bio' : '',
+          'imageUrl' : 'https://firebasestorage.googleapis.com/v0/b/y-app-afbd6.appspot.com/o/profile_pictures%2F1702467523950?alt=media&token=ac4698e3-594a-4424-8b4b-9fc961d9c750',
+        });
 
         // Pop the loading circle.
         Navigator.of(context, rootNavigator: true).pop(context);
@@ -61,13 +65,19 @@ class _RegisterPageState extends State<RegisterPage> {
         // Pop the loading circle.
         Navigator.of(context, rootNavigator: true).pop(context);
 
-        displayErrorMessage('Username must include alphabetic symbols only.', context);
+        displayErrorMessage(
+          AppLocalizations.of(context)!.usernameMustIncludeAlphabeticSymbolsOnly,
+          context,
+        );
       }
     } else {
       // Pop the loading circle.
       Navigator.of(context, rootNavigator: true).pop(context);
 
-      displayErrorMessage('Passwords do not match.', context);
+      displayErrorMessage(
+        AppLocalizations.of(context)!.passwordsDoNotMatch,
+        context,
+      );
     }
   }
 
@@ -92,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 50),
 
                 Text(
-                  'Let\'s get to know each other!',
+                  AppLocalizations.of(context)!.letUsGetToKnowEachOther,
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
@@ -103,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 MyTextField(
                   controller: usernameController,
-                  hintText: 'Username',
+                  hintText: AppLocalizations.of(context)!.username,
                   obscureText: false,
                 ),
 
@@ -111,7 +121,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 MyTextField(
                   controller: emailController,
-                  hintText: 'Email',
+                  hintText: AppLocalizations.of(context)!.email,
                   obscureText: false,
                 ),
             
@@ -119,7 +129,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 MyTextField(
                   controller: passwordController,
-                  hintText: 'Password',
+                  hintText: AppLocalizations.of(context)!.password,
                   obscureText: true,
                 ),
 
@@ -127,14 +137,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 MyTextField(
                   controller: confirmPasswordController,
-                  hintText: 'Confirm Password',
+                  hintText: AppLocalizations.of(context)!.confirmPassword,
                   obscureText: true,
                 ),
             
                 const SizedBox(height: 20),
 
                 MyButton(
-                  text: 'Sign Up',
+                  text: AppLocalizations.of(context)!.signUp,
                   onTap: signUserUp,
                 ),
             
@@ -154,7 +164,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          'or continue with',
+                          AppLocalizations.of(context)!.orContinueWith,
                           style: TextStyle(color: Colors.grey[700]),
                         ),
                       ),
@@ -186,15 +196,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Already have an account?',
+                      AppLocalizations.of(context)!.alreadyHaveAnAccount,
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: widget.onTap,
-                      child: const Text(
-                        'Sign in now',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.signInNow,
+                        style: const TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold
                         ),
