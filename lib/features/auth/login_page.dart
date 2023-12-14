@@ -1,17 +1,21 @@
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:y/features/auth/widgets/auth_service.dart';
 import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/my_text_field.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/widgets/display_error_message.dart';
 import 'package:y/features/widgets/display_loading_circle.dart';
-import 'package:y/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const LoginPage({
+    super.key,
+    required this.onTap,
+  });
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -37,13 +41,19 @@ class _LoginPageState extends State<LoginPage> {
         // Pop the loading circle.
         Navigator.of(context, rootNavigator: true).pop(context);
 
-        displayErrorMessage('One or more fields are not filled.', context);
+        displayErrorMessage(
+          AppLocalizations.of(context)!.oneOrMoreFieldsAreNotFilled,
+          context,
+        );
       }
       if (e.code == 'invalid-credential') {
         // Pop the loading circle.
         Navigator.of(context, rootNavigator: true).pop(context);
 
-        displayErrorMessage('Invalid email or password.', context);
+        displayErrorMessage(
+          AppLocalizations.of(context)!.invalidEmailOrPassword,
+          context,
+        );
       }
     }
   }
@@ -61,7 +71,10 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 50),
             
                 // Application logo.
-                Image.asset('lib/images/y_logo_black.png', height: 150,),
+                Image.asset(
+                  'lib/images/y_logo_black.png',
+                  height: 150,
+                ),
             
                 const SizedBox(height: 50),
 
@@ -77,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 MyTextField(
                   controller: emailController,
-                  hintText: 'Email',
+                  hintText: AppLocalizations.of(context)!.email,
                   obscureText: false,
                 ),
             
@@ -85,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 MyTextField(
                   controller: passwordController,
-                  hintText: 'Password',
+                  hintText: AppLocalizations.of(context)!.password,
                   obscureText: true,
                 ),
             
@@ -97,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        'Forgot your password?',
+                        AppLocalizations.of(context)!.forgotYourPassword,
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                     ],
@@ -107,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 10),
 
                 MyButton(
-                  text: 'Sign In',
+                  text: AppLocalizations.of(context)!.signIn,
                   onTap: signUserIn,
                 ),
             
@@ -127,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          'or continue with',
+                          AppLocalizations.of(context)!.orContinueWith,
                           style: TextStyle(color: Colors.grey[700]),
                         ),
                       ),
@@ -159,20 +172,20 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Not a member?',
+                      AppLocalizations.of(context)!.notAMember,
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: widget.onTap,
-                      child: const Text(
-                        'Register now',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.registerNow,
+                        style: const TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold
                         ),
                       ),
-                    )
+                    ),
                   ]
                 ),
               ],
@@ -188,11 +201,9 @@ class _LoginPageState extends State<LoginPage> {
     String welcomeMessage;
 
     if (randomInt == 1) {
-      welcomeMessage = "y tho?";
-    } else if (randomInt == 2) {
-      welcomeMessage = "уъу";
+      welcomeMessage = AppLocalizations.of(context)!.yTho;
     } else {
-      welcomeMessage = "Welcome back!";
+      welcomeMessage = AppLocalizations.of(context)!.welcomeBack;
     }
 
     return welcomeMessage;

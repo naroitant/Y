@@ -60,5 +60,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>Needed in order to let the user select a picture for their profile</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Needed in order to let the user select a picture for their profile</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Needed in order to let the user select a picture for their profile</string>
 </dict>
 </plist>

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:y/domain/models/post_preview.dart';
 
 class PostPreviewInfo extends StatelessWidget {
@@ -37,7 +39,7 @@ class PostPreviewInfo extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            '${postPreview.likes} likes',
+            '${postPreview.likes} ${AppLocalizations.of(context)!.likes}',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),

@@ -1,7 +1,8 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -50,12 +51,49 @@ class _ProfilePageState extends State<ProfilePage> {
     String bio = bioController.text;
 
     displayLoadingCircle(context);
-    await StoreData().saveData(username: username, bio: bio, file: _image!);
+
+    if (username.trim().isNotEmpty) {
+      // Check if the username contains alphabetic symbols only.
+      if (alphabetic.hasMatch(usernameController.text)) {
+        await StoreData().saveData(
+          username: username,
+          bio: bio,
+          file: _image!,
+        );
+
+        // Pop the loading circle.
+        Navigator.of(context, rootNavigator: true).pop(context);
+
+        displaySnackBar(
+          AppLocalizations.of(context)!.yourChangesHaveBeenSaved,
+          context,
+        );
+      } else {
+        // Pop the loading circle.
+        Navigator.of(context, rootNavigator: true).pop(context);
+
+        displayErrorMessage(
+          AppLocalizations.of(context)!.usernameMustIncludeAlphabeticSymbolsOnly,
+          context,
+        );
+      }
+    } else {
+      // Pop the loading circle.
+      Navigator.of(context, rootNavigator: true).pop(context);
+
+      displayErrorMessage(
+        AppLocalizations.of(context)!.usernameIsNotFilled,
+        context,
+      );
+    }
 
     // Pop the loading circle.
     Navigator.of(context, rootNavigator: true).pop(context);
 
-    displaySnackBar('Your changes have been saved!', context);
+    displaySnackBar(
+      AppLocalizations.of(context)!.yourChangesHaveBeenSaved,
+      context,
+    );
   }
 
   Future saveProfile() async {
@@ -75,18 +113,27 @@ class _ProfilePageState extends State<ProfilePage> {
         // Pop the loading circle.
         Navigator.of(context, rootNavigator: true).pop(context);
 
-        displaySnackBar('Your changes have been saved!', context);
+        displaySnackBar(
+          AppLocalizations.of(context)!.yourChangesHaveBeenSaved,
+          context,
+        );
       } else {
         // Pop the loading circle.
         Navigator.of(context, rootNavigator: true).pop(context);
 
-        displayErrorMessage('Username must include alphabetic symbols only.', context);
+        displayErrorMessage(
+          AppLocalizations.of(context)!.usernameMustIncludeAlphabeticSymbolsOnly,
+          context,
+        );
       }
     } else {
       // Pop the loading circle.
       Navigator.of(context, rootNavigator: true).pop(context);
 
-      displayErrorMessage('Username is not filled!', context);
+      displayErrorMessage(
+        AppLocalizations.of(context)!.usernameIsNotFilled,
+        context,
+      );
     }
   }
 
@@ -95,6 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.profile),
         actions: [
           IconButton(
             onPressed: signUserOut,
@@ -105,9 +153,9 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
-          .collection('Users')
-          .doc(currentUser.email)
-          .snapshots(),
+            .collection('Users')
+            .doc(currentUser.email)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final userData = snapshot.data!.data() as Map<String, dynamic>;
@@ -127,19 +175,22 @@ class _ProfilePageState extends State<ProfilePage> {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black.withOpacity(0.6), width: 1.5),
+                                border: Border.all(
+                                  color: Colors.black.withOpacity(0.6),
+                                  width: 1.5,
+                                ),
                                 color: Colors.white,
                                 shape: BoxShape.circle,
                               ),
                               child: _image != null
-                                ? CircleAvatar(
-                                  radius: 80,
-                                  backgroundImage: MemoryImage(_image!),
-                                )
-                                : CircleAvatar(
-                                  radius: 80,
-                                  backgroundImage: NetworkImage(userData['imageUrl']),
-                                ),
+                                  ? CircleAvatar(
+                                radius: 80,
+                                backgroundImage: MemoryImage(_image!),
+                              )
+                                  : CircleAvatar(
+                                radius: 80,
+                                backgroundImage: NetworkImage(userData['imageUrl']),
+                              ),
                             ),
                             Positioned(
                               bottom: -5,
@@ -173,14 +224,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     
                         TextBox(
                           controller: emailController,
-                          sectionName: 'email',
+                          sectionName: AppLocalizations.of(context)!.email,
                         ),
                     
                         const SizedBox(height: 8),
                     
                         TextBoxEditable(
                           controller: bioController,
-                          sectionName: 'bio',
+                          sectionName: AppLocalizations.of(context)!.bio,
                         ),
                     
                         const SizedBox(height: 16),
@@ -194,15 +245,15 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: _image != null
                               ? saveProfileWithPicture
                               : saveProfile,
-                            child: const Text(
-                              'Save',
-                              style: TextStyle(
+                            child: Text(
+                              AppLocalizations.of(context)!.save,
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                               textAlign: TextAlign.center,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -210,7 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
               );
           } else if (snapshot.hasError) {
             return Center(
-              child: Text('Error${snapshot.error}'),
+              child: Text('${AppLocalizations.of(context)!.error} ${snapshot.error}'),
             );
           }
 

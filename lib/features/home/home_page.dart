@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> listenScroll() async {
     final isPageEnd = scrollController.offset + 150 >
-      scrollController.position.maxScrollExtent;
+        scrollController.position.maxScrollExtent;
 
     if (isPageEnd) {
       await postsCubit.nextPage();
