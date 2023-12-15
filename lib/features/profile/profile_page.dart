@@ -143,13 +143,6 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.profile),
-        actions: [
-          IconButton(
-            onPressed: signUserOut,
-            icon: const Icon(Icons.logout),
-            color: Colors.black,
-          ),
-        ],
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
