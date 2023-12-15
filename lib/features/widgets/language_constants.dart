@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const String languageCode = 'languageCode';
-
 const String english = 'en';
 const String russian = 'ru';
 
@@ -33,5 +32,3 @@ Locale locale(String code) {
 AppLocalizations translation(BuildContext context) {
   return AppLocalizations.of(context)!;
 }
-
-

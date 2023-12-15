@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-
 import 'package:y/domain/models/list_model.dart' as domain;
+
 part 'list_model.freezed.dart';
 
 @freezed

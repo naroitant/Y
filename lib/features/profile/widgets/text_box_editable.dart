@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:y/features/themes/theme_provider.dart';
 
 class TextBoxEditable extends StatelessWidget {
   final controller;
@@ -11,19 +13,27 @@ class TextBoxEditable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Adjust the parameters according to the selected theme.
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    late int shade;
+    if (themeProvider.themeMode == ThemeMode.dark) {
+      shade = 400;
+    } else {
+      shade = 900;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Section name.
         Text(
           sectionName,
-          style: TextStyle(color: Colors.grey[700]),
+          style: TextStyle(color: Colors.grey[shade]),
         ),
         // Text.
         TextField(
           decoration: const InputDecoration(
             filled: true,
-            fillColor: Colors.white,
             contentPadding: EdgeInsets.all(10),
             border: OutlineInputBorder(),
           ),

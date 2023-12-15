@@ -14,7 +14,6 @@ class UsernameTextBox extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Text.
           TextField(
             decoration: const InputDecoration(
               contentPadding: EdgeInsets.all(0),
