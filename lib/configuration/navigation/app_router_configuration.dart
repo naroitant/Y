@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:y/configuration/navigation/app_routes.dart';
-import 'package:y/features/auth/auth_or_home_page.dart';
+import 'package:y/features/auth/auth_page.dart';
 import 'package:y/features/home/home_page.dart';
 import 'package:y/features/navigation/main_screen.dart';
 import 'package:y/features/profile/profile_page.dart';
-import 'package:y/features/settings/settings_page.dart';
+import 'app_routes.dart';
 
 class AppRouterConfiguration {
   static GoRouter createRouter(BuildContext appContext) {
@@ -25,7 +24,7 @@ class AppRouterConfiguration {
             GoRoute(
               name: AppRoutes.auth.name,
               path: AppRoutes.auth.path,
-              builder: (context, state) => const AuthOrHomePage(),
+              builder: (context, state) => const AuthPage(),
             ),
             GoRoute(
               name: AppRoutes.search.name,
@@ -45,7 +44,7 @@ class AppRouterConfiguration {
             GoRoute(
               name: AppRoutes.settings.name,
               path: AppRoutes.settings.path,
-              builder: (context, state) => const SettingsPage(),
+              builder: (context, state) => const Center(child: Text('settings')),
             ),
           ],
         ),

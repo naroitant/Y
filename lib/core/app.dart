@@ -1,8 +1,8 @@
-import 'di/app_services.dart';
 import 'package:flutter/material.dart';
+import 'di/app_services.dart';
 
 import 'package:y/core/di/app_providers.dart';
-import 'package:y/features/navigation/widgets/app_router_widget.dart';
+import 'package:y/features/navigation/app_router_widget.dart';
 
 class MyApp extends StatelessWidget {
   final AppServices appServices;
