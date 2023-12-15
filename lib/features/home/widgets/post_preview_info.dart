@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'package:y/domain/models/post_preview.dart';
 
 class PostPreviewInfo extends StatelessWidget {
@@ -10,6 +9,20 @@ class PostPreviewInfo extends StatelessWidget {
     required this.postPreview,
     super.key,
   });
+
+  // Determine which ending the word 'like' should have.
+  String determineEnding(number, context) {
+    if (number == 1) {
+      return AppLocalizations.of(context)!.like;
+    } else if (number.remainder(10) == 1) {
+      return AppLocalizations.of(context)!.likes_singular;
+    } else if ((number.remainder(10) > 1 && number.remainder(10) < 5) &&
+        number.remainder(100) > 14) {
+      return AppLocalizations.of(context)!.likes_dual;
+    } else {
+      return AppLocalizations.of(context)!.likes_plural;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +52,7 @@ class PostPreviewInfo extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            '${postPreview.likes} ${AppLocalizations.of(context)!.likes}',
+            '${postPreview.likes} ${determineEnding(postPreview.likes, context)}',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -47,18 +60,16 @@ class PostPreviewInfo extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 6, left: 16, right: 16),
-          child: RichText(
-            text: TextSpan(
+          child: Text.rich(
+            TextSpan(
               text: '${postPreview.owner.firstName} ',
               style: const TextStyle(
-                color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
               children: [
                 TextSpan(
                   text: postPreview.text,
                   style: const TextStyle(
-                    color: Colors.black,
                     fontWeight: FontWeight.w300,
                   ),
                 ),

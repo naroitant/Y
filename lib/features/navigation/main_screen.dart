@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:y/configuration/navigation/app_routes.dart';
-
 class MainScreen extends StatefulWidget {
   final Widget child;
 
@@ -17,14 +15,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  static final navigationRoutes = [
-    AppRoutes.home,
-    AppRoutes.search,
-    AppRoutes.video,
-    AppRoutes.profile,
-    AppRoutes.settings,
-  ];
-
   int _currentIndex = 0;
 
   @override
@@ -49,31 +39,24 @@ class _MainScreenState extends State<MainScreen> {
                 type: BottomNavigationBarType.fixed,
                 showSelectedLabels: false,
                 showUnselectedLabels: false,
-                selectedIconTheme: const IconThemeData(color: Colors.black87),
-                unselectedIconTheme: IconThemeData(
-                  color: Colors.black.withOpacity(0.5),
-                ),
                 currentIndex: _currentIndex,
                 onTap:
                   (int index) {
                     setState(() {
                       _currentIndex = index;
-                      context.goNamed(navigationRoutes[index].name);
+                      if (index == 0) {
+                        context.push("/home");
+                      } else if (index == 1) {
+                        context.push("/profile");
+                      } else if (index == 2) {
+                        context.push("/settings");
+                      }
                     });
                   },
-                // onTap: onChangePage,
                 items: const [
                   BottomNavigationBarItem(
                     label: '',
                     icon: Icon(Icons.home),
-                  ),
-                  BottomNavigationBarItem(
-                    label: '',
-                    icon: Icon(Icons.search),
-                  ),
-                  BottomNavigationBarItem(
-                    label: '',
-                    icon: Icon(Icons.video_collection),
                   ),
                   BottomNavigationBarItem(
                     label: '',
@@ -99,9 +82,5 @@ class _MainScreenState extends State<MainScreen> {
         }
       ),
     );
-  }
-
-  void onChangePage(index) {
-    context.goNamed(navigationRoutes[index].name);
   }
 }

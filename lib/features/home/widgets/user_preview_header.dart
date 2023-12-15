@@ -36,12 +36,11 @@ class UserPreviewHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      userPreview.firstName,
+                      '${userPreview.firstName} ${userPreview.lastName}',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(userPreview.lastName),
                   ],
                 ),
               ),

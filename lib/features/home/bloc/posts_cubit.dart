@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:y/data/remote_data_sources/post/post_data_source.dart';
 import 'package:y/domain/models/list_model.dart';
 import 'package:y/domain/models/post_preview.dart';

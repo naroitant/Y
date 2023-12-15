@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:y/features/home/bloc/posts_cubit.dart';
 import 'package:y/features/home/widgets/post_preview_card.dart';
 
@@ -31,30 +31,30 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.feed),
+      ),
       body: BlocBuilder<PostsCubit, PostsState>(
         bloc: postsCubit,
         builder: (context, state) {
           return switch (state) {
             PostsLoadedState() => ListView.builder(
-              controller: scrollController,
-              itemCount: state.postsInfo.data.length,
-              prototypeItem: Padding(
-                padding: const EdgeInsets.only(top: 24),
-                child: PostPreviewCard(
-                  postPreview: state.postsInfo.data.first,
+                controller: scrollController,
+                itemCount: state.postsInfo.data.length,
+                prototypeItem: Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: PostPreviewCard(
+                    postPreview: state.postsInfo.data.first,
+                  ),
                 ),
-              ),
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 24),
-                  child: SingleChildScrollView(
+                itemBuilder: (context, index) {
+                  return SingleChildScrollView(
                     child: PostPreviewCard(
                       postPreview: state.postsInfo.data[index],
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
             _ => const Center(child: CircularProgressIndicator()),
           };
         },

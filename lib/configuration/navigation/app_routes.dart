@@ -8,12 +8,6 @@ class AppRoutes {
   // AuthOrHome
   static const authOrHome = (name: 'auth_or_home', path: '/auth_or_home');
 
-  // Search
-  static const search = (name: 'search', path: '/search');
-
-  // Video
-  static const video = (name: 'video', path: '/video');
-
   // Profile
   static const profile = (name: 'profile', path: '/profile');
 

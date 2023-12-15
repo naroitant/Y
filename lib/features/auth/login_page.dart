@@ -1,17 +1,20 @@
 import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:provider/provider.dart';
 import 'package:y/features/auth/widgets/auth_service.dart';
 import 'package:y/features/auth/widgets/my_button.dart';
 import 'package:y/features/auth/widgets/my_text_field.dart';
 import 'package:y/features/auth/widgets/square_tile.dart';
 import 'package:y/features/widgets/display_error_message.dart';
 import 'package:y/features/widgets/display_loading_circle.dart';
+import 'package:y/features/themes/theme_provider.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
+
   const LoginPage({
     super.key,
     required this.onTap,
@@ -34,24 +37,41 @@ class _LoginPageState extends State<LoginPage> {
         email: emailController.text,
         password: passwordController.text,
       );
+
       // Pop the loading circle.
       Navigator.of(context, rootNavigator: true).pop(context);
     } on FirebaseAuthException catch (e) {
-      if (emailController.text == '' || passwordController.text == '') {
-        // Pop the loading circle.
-        Navigator.of(context, rootNavigator: true).pop(context);
+      // Pop the loading circle.
+      Navigator.of(context, rootNavigator: true).pop(context);
 
+      if (emailController.text == '' || passwordController.text == '') {
         displayErrorMessage(
           AppLocalizations.of(context)!.oneOrMoreFieldsAreNotFilled,
           context,
         );
-      }
-      if (e.code == 'invalid-credential') {
-        // Pop the loading circle.
-        Navigator.of(context, rootNavigator: true).pop(context);
-
+      } else if (e.code == 'invalid-credential') {
         displayErrorMessage(
           AppLocalizations.of(context)!.invalidEmailOrPassword,
+          context,
+        );
+      } else if (e.code == 'invalid-email') {
+        displayErrorMessage(
+          AppLocalizations.of(context)!.invalidEmail,
+          context,
+        );
+      } else if (e.code == 'user-disabled') {
+        displayErrorMessage(
+          AppLocalizations.of(context)!.userDisabled,
+          context,
+        );
+      } else if (e.code == 'user-not-found') {
+        displayErrorMessage(
+          AppLocalizations.of(context)!.userNotFound,
+          context,
+        );
+      } else if (e.code == 'wrong-password') {
+        displayErrorMessage(
+          AppLocalizations.of(context)!.wrongPassword,
           context,
         );
       }
@@ -60,8 +80,19 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Adjust the parameters according to the selected theme.
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    late int shade;
+    late String pathToLogo;
+    if (themeProvider.themeMode == ThemeMode.dark) {
+      pathToLogo = 'lib/images/y_logo_light.png';
+      shade = 400;
+    } else {
+      pathToLogo = 'lib/images/y_logo_dark.png';
+      shade = 700;
+    }
+
     return Scaffold(
-      backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -69,23 +100,23 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 50),
-            
+
                 // Application logo.
                 Image.asset(
-                  'lib/images/y_logo_black.png',
+                  pathToLogo,
                   height: 150,
                 ),
-            
+
                 const SizedBox(height: 50),
 
                 Text(
                   generateWelcomeMessage(),
                   style: TextStyle(
-                    color: Colors.grey[700],
                     fontSize: 16,
+                    color: Colors.grey[shade],
                   ),
                 ),
-            
+
                 const SizedBox(height: 25),
 
                 MyTextField(
@@ -93,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: AppLocalizations.of(context)!.email,
                   obscureText: false,
                 ),
-            
+
                 const SizedBox(height: 10),
 
                 MyTextField(
@@ -101,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: AppLocalizations.of(context)!.password,
                   obscureText: true,
                 ),
-            
+
                 const SizedBox(height: 4),
 
                 Padding(
@@ -111,21 +142,24 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Text(
                         AppLocalizations.of(context)!.forgotYourPassword,
-                        style: TextStyle(color: Colors.grey[600]),
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
                 ),
-            
+
                 const SizedBox(height: 10),
 
                 MyButton(
                   text: AppLocalizations.of(context)!.signIn,
                   onTap: signUserIn,
                 ),
-            
+
                 const SizedBox(height: 10),
-            
+
                 // Suggest 3rd party authentication.
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -134,26 +168,28 @@ class _LoginPageState extends State<LoginPage> {
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Colors.grey[400],
+                          color: Colors.grey[shade],
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
                           AppLocalizations.of(context)!.orContinueWith,
-                          style: TextStyle(color: Colors.grey[700]),
+                          style: TextStyle(
+                            color: Colors.grey[shade],
+                          ),
                         ),
                       ),
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Colors.grey[400],
+                          color: Colors.grey[shade],
                         ),
                       ),
                     ],
                   ),
                 ),
-            
+
                 const SizedBox(height: 10),
 
                 Row(
@@ -161,11 +197,11 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     SquareTile(
                       onTap: () => AuthService().signInWithGoogle(),
-                      imagePath: 'lib/images/google_logo.png'
+                      imagePath: 'lib/images/google_logo.png',
                     ),
                   ],
                 ),
-            
+
                 const SizedBox(height: 10),
 
                 Row(
@@ -173,20 +209,24 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Text(
                       AppLocalizations.of(context)!.notAMember,
-                      style: TextStyle(color: Colors.grey[700]),
+                      style: TextStyle(
+                        color: Colors.grey[shade],
+                      ),
                     ),
+
                     const SizedBox(width: 4),
+
                     GestureDetector(
                       onTap: widget.onTap,
                       child: Text(
                         AppLocalizations.of(context)!.registerNow,
                         style: const TextStyle(
                           color: Colors.blue,
-                          fontWeight: FontWeight.bold
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  ]
+                  ],
                 ),
               ],
             ),
