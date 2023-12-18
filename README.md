@@ -1,2 +1,2 @@
-# y
+# Y
 A brand new social network.
