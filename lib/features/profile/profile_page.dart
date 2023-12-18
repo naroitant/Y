@@ -1,18 +1,16 @@
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
-import 'package:y/features/profile/widgets/pick_image.dart';
-import 'package:y/features/profile/widgets/text_box.dart';
+
 import 'package:y/features/profile/widgets/text_box_editable.dart';
+import 'package:y/features/profile/widgets/text_box.dart';
 import 'package:y/features/profile/widgets/upload_data.dart';
 import 'package:y/features/profile/widgets/username_text_box.dart';
-import 'package:y/features/themes/theme_provider.dart';
+import 'package:y/features/profile/widgets/pick_image.dart';
 import 'package:y/features/widgets/display_error_message.dart';
 import 'package:y/features/widgets/display_loading_circle.dart';
 import 'package:y/features/widgets/display_snack_bar.dart';
@@ -63,6 +61,9 @@ class _ProfilePageState extends State<ProfilePage> {
           file: _image!,
         );
 
+        // Pop the loading circle.
+        Navigator.of(context, rootNavigator: true).pop(context);
+
         displaySnackBar(
           AppLocalizations.of(context)!.yourChangesHaveBeenSaved,
           context,
@@ -85,6 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
         context,
       );
     }
+
     // Pop the loading circle.
     Navigator.of(context, rootNavigator: true).pop(context);
 
@@ -137,18 +139,17 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Adjust the parameters according to the selected theme.
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    late int shade;
-    if (themeProvider.themeMode == ThemeMode.dark) {
-      shade = 400;
-    } else {
-      shade = 900;
-    }
-
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.profile),
+        actions: [
+          IconButton(
+            onPressed: signUserOut,
+            icon: const Icon(Icons.logout),
+            color: Colors.black,
+          ),
+        ],
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -191,7 +192,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 backgroundImage: NetworkImage(userData['imageUrl']),
                               ),
                             ),
-
                             Positioned(
                               bottom: -5,
                               left: 95,
@@ -208,7 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                             ),
-                          ],
+                          ]
                         ),
                     
                         UsernameTextBox(controller: usernameController),
@@ -217,7 +217,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     
                         Divider(
                           thickness: 0.5,
-                          color: Colors.grey[shade],
+                          color: Colors.grey[400],
                         ),
                     
                         const SizedBox(height: 12),
@@ -264,6 +264,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Text('${AppLocalizations.of(context)!.error} ${snapshot.error}'),
             );
           }
+
           return const Center(
             child: CircularProgressIndicator(),
           );

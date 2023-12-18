@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:y/features/settings/widgets/select_language_option.dart';
-import 'package:y/features/settings/widgets/theme_switch.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:y/features/navigation/widgets/app_router_widget.dart';
+import 'package:y/features/widgets/language.dart';
+import 'package:y/features/widgets/language_constants.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -13,14 +15,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool themeValue = true;
-
-  changeTheme(bool newValue) {
-    setState(() {
-      themeValue = newValue;
-    });
-  }
-
   void signUserOut() {
     FirebaseAuth.instance.signOut();
     // Redirect to the login page.
@@ -32,172 +26,43 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.settings),
-        leading: IconButton(
-          onPressed: () {
-            GoRouter.of(context).pop();
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-          ),
-        ),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(32),
+      body: SafeArea(
         child: ListView(
+          padding: const EdgeInsets.all(24),
           children: [
-            const SizedBox(height: 40),
-
-            Row(
-              children: [
-                const Icon(
-                  Icons.settings,
-                  color: Colors.blue,
+            Center(
+              child: DropdownButton<Language>(
+                alignment: AlignmentDirectional.centerStart,
+                icon: const Icon(
+                  Icons.language,
+                  color: Colors.black,
                 ),
-
-                const SizedBox(width: 10),
-
-                Text(
-                  AppLocalizations.of(context)!.ui,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                hint: Text(AppLocalizations.of(context)!.changeLanguage),
+                onChanged: (Language? language) async {
+                  if (language != null) {
+                    Locale locale = await setLocale(language.languageCode);
+                    AppRouterWidget.setLocale(context, locale);
+                  }
+                },
+                items: Language.languageList().map<DropdownMenuItem<Language>>(
+                    (e) => DropdownMenuItem<Language>(
+                  value: e,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text(e.name),
+                    ],
                   ),
-                ),
-              ],
-            ),
-
-            const Divider(
-              height: 20,
-              thickness: 1,
-            ),
-
-            const SizedBox(height: 10),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 8,
-                horizontal: 20,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.darkTheme,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  ThemeSwitch(),
-                ],
+                )).toList(),
               ),
             ),
-
-            const SizedBox(height: 40),
-
-            Row(
-              children: [
-                const Icon(
-                  Icons.person,
-                  color: Colors.blue,
-                ),
-
-                const SizedBox(width: 10),
-
-                Text(
-                  AppLocalizations.of(context)!.account,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+            IconButton(
+              onPressed: signUserOut,
+              icon: const Icon(Icons.logout),
+              color: Colors.black,
             ),
-
-            const Divider(
-              height: 20,
-              thickness: 1,
-            ),
-
-            const SizedBox(height: 10),
-
-            GestureDetector(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text(AppLocalizations.of(context)!.selectLanguage),
-                        content: const Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SelectLanguageOption(
-                                languageCode: 'en', languageName: 'English'),
-
-                            SizedBox(height: 10),
-
-                            SelectLanguageOption(
-                                languageCode: 'ru', languageName: 'русский'),
-                          ],
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text(AppLocalizations.of(context)!.close),
-                          ),
-                        ],
-                      );
-                    }
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.language,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.grey,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            GestureDetector(
-              onTap: () {
-                signUserOut();
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.signOut,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.red[400],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 50),
-          ],
+          ]
         ),
       ),
     );
