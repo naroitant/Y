@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class UsernameTextBox extends StatelessWidget {
-  final controller;
+  final dynamic controller;
+
   const UsernameTextBox({
     super.key,
     required this.controller,

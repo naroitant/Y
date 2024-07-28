@@ -12,9 +12,13 @@ void displayErrorMessage(String text, context) {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator
+                    .of(context)
+                    .pop();
               },
-              child: Text(AppLocalizations.of(context)!.close),
+              child: Text(AppLocalizations
+                  .of(context)!
+                  .close),
             ),
           ],
         );

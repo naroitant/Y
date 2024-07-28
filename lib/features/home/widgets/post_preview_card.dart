@@ -14,7 +14,10 @@ class PostPreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size.width;
+    final size = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return Column(
       children: [

@@ -22,7 +22,9 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void signUserOut() {
-    FirebaseAuth.instance.signOut();
+    FirebaseAuth
+        .instance
+        .signOut();
     // Redirect to the login page.
     context.go('/auth');
   }
@@ -31,10 +33,14 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.settings),
+        title: Text(AppLocalizations
+            .of(context)!
+            .settings),
         leading: IconButton(
           onPressed: () {
-            GoRouter.of(context).pop();
+            GoRouter
+                .of(context)
+                .pop();
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -57,7 +63,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 const SizedBox(width: 10),
 
                 Text(
-                  AppLocalizations.of(context)!.ui,
+                  AppLocalizations
+                      .of(context)!
+                      .ui,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -82,7 +90,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.darkTheme,
+                    AppLocalizations
+                        .of(context)!
+                        .darkTheme,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -105,7 +115,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 const SizedBox(width: 10),
 
                 Text(
-                  AppLocalizations.of(context)!.account,
+                  AppLocalizations
+                      .of(context)!
+                      .account,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -127,7 +139,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text(AppLocalizations.of(context)!.selectLanguage),
+                        title: Text(AppLocalizations
+                            .of(context)!
+                            .selectLanguage),
                         content: const Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -143,9 +157,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              Navigator
+                                  .of(context)
+                                  .pop();
                             },
-                            child: Text(AppLocalizations.of(context)!.close),
+                            child: Text(AppLocalizations
+                                .of(context)!
+                                .close),
                           ),
                         ],
                       );
@@ -153,12 +171,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 );
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                padding: const EdgeInsets
+                    .symmetric(vertical: 8, horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.language,
+                      AppLocalizations
+                          .of(context)!
+                          .language,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -179,12 +200,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 signUserOut();
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                padding: const EdgeInsets
+                    .symmetric(vertical: 8, horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.signOut,
+                      AppLocalizations
+                          .of(context)!
+                          .signOut,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,

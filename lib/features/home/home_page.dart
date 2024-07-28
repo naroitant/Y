@@ -32,7 +32,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.feed),
+        title: Text(AppLocalizations
+            .of(context)!
+            .feed),
       ),
       body: BlocBuilder<PostsCubit, PostsState>(
         bloc: postsCubit,
@@ -40,17 +42,25 @@ class _HomePageState extends State<HomePage> {
           return switch (state) {
             PostsLoadedState() => ListView.builder(
                 controller: scrollController,
-                itemCount: state.postsInfo.data.length,
+                itemCount: state
+                    .postsInfo
+                    .data
+                    .length,
                 prototypeItem: Padding(
                   padding: const EdgeInsets.only(top: 16),
                   child: PostPreviewCard(
-                    postPreview: state.postsInfo.data.first,
+                    postPreview: state
+                        .postsInfo
+                        .data
+                        .first,
                   ),
                 ),
                 itemBuilder: (context, index) {
                   return SingleChildScrollView(
                     child: PostPreviewCard(
-                      postPreview: state.postsInfo.data[index],
+                      postPreview: state
+                          .postsInfo
+                          .data[index],
                     ),
                   );
                 },
@@ -64,7 +74,9 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> listenScroll() async {
     final isPageEnd = scrollController.offset + 150 >
-        scrollController.position.maxScrollExtent;
+        scrollController
+            .position
+            .maxScrollExtent;
 
     if (isPageEnd) {
       await postsCubit.nextPage();

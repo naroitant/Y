@@ -18,9 +18,14 @@ class PostDataSource {
       queryParameters: {'page': page},
     );
 
-    final model = source_source_list_model.ListModel.fromJson(result.data)
+    final model = source_source_list_model
+        .ListModel
+        .fromJson(result.data)
         .toEntity<PostPreview>(
-      (a) => source_post_preview.PostPreview.fromJson(a).toEntity(),
+      (a) => source_post_preview
+          .PostPreview
+          .fromJson(a)
+          .toEntity(),
     ) as ListModel<PostPreview>;
 
     return model;

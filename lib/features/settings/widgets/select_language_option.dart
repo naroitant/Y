@@ -18,7 +18,9 @@ class SelectLanguageOption extends StatelessWidget {
       onTap: () async {
         Locale locale = await setLocale(languageCode);
         AppRouterWidget.setLocale(context, locale);
-        Navigator.of(context).pop();
+        Navigator
+            .of(context)
+            .pop();
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),

@@ -11,17 +11,29 @@ class PostPreviewInfo extends StatelessWidget {
   });
 
   // Determine which ending the word 'like' should have.
-  String determineEnding(number, context) {
+  String determineEndingForLike(number, context) {
     if (number == 1) {
-      return AppLocalizations.of(context)!.like;
-    } else if (number.remainder(10) == 1) {
-      return AppLocalizations.of(context)!.likes_singular;
-    } else if ((number.remainder(10) > 1 && number.remainder(10) < 5) &&
-        number.remainder(100) > 14) {
-      return AppLocalizations.of(context)!.likes_dual;
-    } else {
-      return AppLocalizations.of(context)!.likes_plural;
+      return AppLocalizations
+          .of(context)!
+          .like;
     }
+
+    if (number.remainder(10) == 1) {
+      return AppLocalizations
+          .of(context)!
+          .likes_singular;
+    }
+
+    if ((number.remainder(10) > 1 && number.remainder(10) < 5) &&
+        number.remainder(100) > 14) {
+      return AppLocalizations
+          .of(context)!
+          .likes_dual;
+    }
+
+    return AppLocalizations
+        .of(context)!
+        .likes_plural;
   }
 
   @override
@@ -52,17 +64,23 @@ class PostPreviewInfo extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            '${postPreview.likes} ${determineEnding(postPreview.likes, context)}',
+            '${postPreview.likes}'
+                ' ${determineEndingForLike(postPreview.likes, context)}',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 6, left: 16, right: 16),
+          padding: const EdgeInsets.only(
+            top: 6,
+            left: 16,
+            right: 16),
           child: Text.rich(
             TextSpan(
-              text: '${postPreview.owner.firstName} ',
+              text: '${postPreview
+                  .owner
+                  .firstName} ',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),

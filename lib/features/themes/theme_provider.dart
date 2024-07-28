@@ -5,14 +5,18 @@ class ThemeProvider extends ChangeNotifier {
   bool get isDarkMode => themeMode == ThemeMode.dark;
 
   void toggleTheme(bool isOn) {
-    themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
+    (themeMode == isOn)
+        ? ThemeMode.dark
+        : ThemeMode.light;
     notifyListeners();
   }
 }
 
 class MyThemes {
   static final darkTheme = ThemeData(
-    scaffoldBackgroundColor: Colors.grey.shade900,
+    scaffoldBackgroundColor: Colors
+        .grey
+        .shade900,
     primaryColor: Colors.black,
     colorScheme: const ColorScheme.dark(),
     iconTheme: const IconThemeData(

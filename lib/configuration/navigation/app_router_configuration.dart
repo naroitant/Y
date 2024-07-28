@@ -10,7 +10,9 @@ import 'package:y/features/settings/settings_page.dart';
 class AppRouterConfiguration {
   static GoRouter createRouter(BuildContext appContext) {
     return GoRouter(
-      initialLocation: AppRoutes.auth.path,
+      initialLocation: AppRoutes
+          .auth
+          .path,
       routes: [
         ShellRoute(
           builder: (
@@ -21,23 +23,39 @@ class AppRouterConfiguration {
               MainScreen(child: pageWidget),
           routes: [
             GoRoute(
-              name: AppRoutes.home.name,
-              path: AppRoutes.home.path,
+              name: AppRoutes
+                  .home
+                  .name,
+              path: AppRoutes
+                  .home
+                  .path,
               builder: (context, state) => const HomePage(),
             ),
             GoRoute(
-              name: AppRoutes.auth.name,
-              path: AppRoutes.auth.path,
+              name: AppRoutes
+                  .auth
+                  .name,
+              path: AppRoutes
+                  .auth
+                  .path,
               builder: (context, state) => const AuthOrHomePage(),
             ),
             GoRoute(
-              name: AppRoutes.profile.name,
-              path: AppRoutes.profile.path,
+              name: AppRoutes
+                  .profile
+                  .name,
+              path: AppRoutes
+                  .profile
+                  .path,
               builder: (context, state) => const ProfilePage(),
             ),
             GoRoute(
-              name: AppRoutes.settings.name,
-              path: AppRoutes.settings.path,
+              name: AppRoutes
+                  .settings
+                  .name,
+              path: AppRoutes
+                  .settings
+                  .path,
               builder: (context, state) => const SettingsPage(),
             ),
           ],

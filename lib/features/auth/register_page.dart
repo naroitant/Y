@@ -30,15 +30,27 @@ class _RegisterPageState extends State<RegisterPage> {
   void signUserUp() async {
     displayLoadingCircle(context);
 
-    if (usernameController.text.isEmpty ||
-        emailController.text.isEmpty ||
-        passwordController.text.isEmpty ||
-        confirmPasswordController.text.isEmpty) {
+    if (usernameController
+          .text
+          .isEmpty ||
+        emailController
+            .text
+            .isEmpty ||
+        passwordController
+            .text
+            .isEmpty ||
+        confirmPasswordController
+            .text
+            .isEmpty) {
       // Pop the loading circle.
-      Navigator.of(context, rootNavigator: true).pop(context);
+      Navigator
+          .of(context, rootNavigator: true)
+          .pop(context);
 
       displayErrorMessage(
-        AppLocalizations.of(context)!.oneOrMoreFieldsAreNotFilled,
+        AppLocalizations
+            .of(context)!
+            .oneOrMoreFieldsAreNotFilled,
         context,
       );
     } else
@@ -48,7 +60,9 @@ class _RegisterPageState extends State<RegisterPage> {
       if (alphabetic.hasMatch(usernameController.text)) {
         try {
           UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          await FirebaseAuth
+              .instance
+              .createUserWithEmailAndPassword(
             email: emailController.text,
             password: passwordController.text,
           );
@@ -56,60 +70,82 @@ class _RegisterPageState extends State<RegisterPage> {
           // Create a new document with user data in Cloud Firestore.
           FirebaseFirestore.instance
               .collection('Users')
-              .doc(userCredential.user!.email)
+              .doc(userCredential
+              .user!
+              .email)
               .set({
-            'username': usernameController.text.split('0')[0],
-            'bio': '',
-            'imageUrl':
-                'https://firebasestorage.googleapis.com/v0/b/y-app-afbd6.appspot.com/o/profile_pictures%2F1702467523950?alt=media&token=ac4698e3-594a-4424-8b4b-9fc961d9c750',
+                'username': usernameController
+                    .text
+                    .split('0')[0],
+                'bio': '',
+                'imageUrl': 'https://firebasestorage.googleapis.com/v0/b/y-app-afbd6.appspot.com/o/profile_pictures%2F1702467523950?alt=media&token=ac4698e3-594a-4424-8b4b-9fc961d9c750',
           });
         } on FirebaseAuthException catch (e) {
           // Pop the loading circle.
-          Navigator.of(context, rootNavigator: true).pop(context);
+          Navigator
+              .of(context, rootNavigator: true)
+              .pop(context);
 
           if (emailController.text == '' || passwordController.text == '') {
             displayErrorMessage(
-              AppLocalizations.of(context)!.oneOrMoreFieldsAreNotFilled,
+              AppLocalizations
+                  .of(context)!
+                  .oneOrMoreFieldsAreNotFilled,
               context,
             );
           } else if (e.code == 'email-already-in-use') {
             displayErrorMessage(
-              AppLocalizations.of(context)!.emailAlreadyInUse,
+              AppLocalizations
+                  .of(context)!
+                  .emailAlreadyInUse,
               context,
             );
           } else if (e.code == 'invalid-email') {
             displayErrorMessage(
-              AppLocalizations.of(context)!.invalidEmail,
+              AppLocalizations
+                  .of(context)!
+                  .invalidEmail,
               context,
             );
           } else if (e.code == 'operation-not-allowed') {
             displayErrorMessage(
-              AppLocalizations.of(context)!.operationNotAllowed,
+              AppLocalizations
+                  .of(context)!
+                  .operationNotAllowed,
               context,
             );
           } else if (e.code == 'weak-password') {
             displayErrorMessage(
-              AppLocalizations.of(context)!.weakPassword,
+              AppLocalizations
+                  .of(context)!
+                  .weakPassword,
               context,
             );
           }
         }
       } else {
         // Pop the loading circle.
-        Navigator.of(context, rootNavigator: true).pop(context);
+        Navigator
+            .of(context, rootNavigator: true)
+            .pop(context);
 
         displayErrorMessage(
-          AppLocalizations.of(context)!
+          AppLocalizations
+              .of(context)!
               .usernameMustIncludeAlphabeticSymbolsOnly,
           context,
         );
       }
     } else {
       // Pop the loading circle.
-      Navigator.of(context, rootNavigator: true).pop(context);
+      Navigator
+          .of(context, rootNavigator: true)
+          .pop(context);
 
       displayErrorMessage(
-        AppLocalizations.of(context)!.passwordsDoNotMatch,
+        AppLocalizations
+            .of(context)!
+            .passwordsDoNotMatch,
         context,
       );
     }
@@ -147,7 +183,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 50),
 
                 Text(
-                  AppLocalizations.of(context)!.letUsGetToKnowEachOther,
+                  AppLocalizations
+                      .of(context)!
+                      .letUsGetToKnowEachOther,
                   style: const TextStyle(
                     fontSize: 16,
                   ),
@@ -157,7 +195,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 MyTextField(
                   controller: usernameController,
-                  hintText: AppLocalizations.of(context)!.username,
+                  hintText: AppLocalizations
+                      .of(context)!
+                      .username,
                   obscureText: false,
                 ),
 
@@ -165,7 +205,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 MyTextField(
                   controller: emailController,
-                  hintText: AppLocalizations.of(context)!.email,
+                  hintText: AppLocalizations
+                      .of(context)!
+                      .email,
                   obscureText: false,
                 ),
 
@@ -173,7 +215,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 MyTextField(
                   controller: passwordController,
-                  hintText: AppLocalizations.of(context)!.password,
+                  hintText: AppLocalizations
+                      .of(context)!
+                      .password,
                   obscureText: true,
                 ),
 
@@ -181,14 +225,18 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 MyTextField(
                   controller: confirmPasswordController,
-                  hintText: AppLocalizations.of(context)!.confirmPassword,
+                  hintText: AppLocalizations
+                      .of(context)!
+                      .confirmPassword,
                   obscureText: true,
                 ),
 
                 const SizedBox(height: 20),
 
                 MyButton(
-                  text: AppLocalizations.of(context)!.signUp,
+                  text: AppLocalizations
+                      .of(context)!
+                      .signUp,
                   onTap: signUserUp,
                 ),
 
@@ -208,7 +256,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          AppLocalizations.of(context)!.orContinueWith,
+                          AppLocalizations
+                              .of(context)!
+                              .orContinueWith,
                           style: TextStyle(
                             color: Colors.grey[shade],
                           ),
@@ -239,7 +289,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Text(
-                    AppLocalizations.of(context)!.alreadyHaveAnAccount,
+                    AppLocalizations
+                        .of(context)!
+                        .alreadyHaveAnAccount,
                     style: TextStyle(
                       color: Colors.grey[shade],
                     )
@@ -250,7 +302,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   GestureDetector(
                     onTap: widget.onTap,
                     child: Text(
-                      AppLocalizations.of(context)!.signInNow,
+                      AppLocalizations
+                          .of(context)!
+                          .signInNow,
                       style: const TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold

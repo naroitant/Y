@@ -13,7 +13,8 @@ class AppDataSourcesProvider extends StatefulWidget {
   });
 
   @override
-  State<AppDataSourcesProvider> createState() => _AppDataSourcesProviderState();
+  State<AppDataSourcesProvider> createState() =>
+      _AppDataSourcesProviderState();
 }
 
 class _AppDataSourcesProviderState extends State<AppDataSourcesProvider> {
@@ -22,7 +23,9 @@ class _AppDataSourcesProviderState extends State<AppDataSourcesProvider> {
 
   @override
   void initState() {
-    dio = context.read<AppServices>().dio;
+    dio = context
+        .read<AppServices>()
+        .dio;
     initDataSources();
     super.initState();
   }

@@ -13,7 +13,8 @@ class AppRouterWidget extends StatefulWidget {
   State<AppRouterWidget> createState() => _AppRouterWidgetState();
 
   static void setLocale(BuildContext context, Locale newLocale) {
-    _AppRouterWidgetState? state = context.findAncestorStateOfType<_AppRouterWidgetState>();
+    _AppRouterWidgetState? state = context
+        .findAncestorStateOfType<_AppRouterWidgetState>();
     state?.setLocale(newLocale);
   }
 }
@@ -59,4 +60,3 @@ class _AppRouterWidgetState extends State<AppRouterWidget> {
     );
   });
 }
-

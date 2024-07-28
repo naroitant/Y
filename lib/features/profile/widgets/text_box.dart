@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:y/features/themes/theme_provider.dart';
 
 class TextBox extends StatelessWidget {
-  final controller;
+  final dynamic controller;
   final String sectionName;
   const TextBox({
     super.key,
@@ -16,11 +16,9 @@ class TextBox extends StatelessWidget {
     // Adjust the parameters according to the selected theme.
     final themeProvider = Provider.of<ThemeProvider>(context);
     late int shade;
-    if (themeProvider.themeMode == ThemeMode.dark) {
-      shade = 400;
-    } else {
-      shade = 900;
-    }
+    (themeProvider.themeMode == ThemeMode.dark)
+      ? shade = 400
+      : shade = 900;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -5,10 +5,14 @@ void displaySnackBar(String text, context) {
   final snackBar = SnackBar(
     content: Text(text),
     action: SnackBarAction(
-      label: AppLocalizations.of(context)!.ok,
+      label: AppLocalizations
+          .of(context)!
+          .ok,
       onPressed: () {},
     ),
   );
 
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  ScaffoldMessenger
+      .of(context)
+      .showSnackBar(snackBar);
 }

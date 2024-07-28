@@ -39,39 +39,55 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       // Pop the loading circle.
-      Navigator.of(context, rootNavigator: true).pop(context);
+      Navigator
+          .of(context, rootNavigator: true)
+          .pop(context);
     } on FirebaseAuthException catch (e) {
       // Pop the loading circle.
-      Navigator.of(context, rootNavigator: true).pop(context);
+      Navigator
+          .of(context, rootNavigator: true)
+          .pop(context);
 
       if (emailController.text == '' || passwordController.text == '') {
         displayErrorMessage(
-          AppLocalizations.of(context)!.oneOrMoreFieldsAreNotFilled,
+          AppLocalizations
+              .of(context)!
+              .oneOrMoreFieldsAreNotFilled,
           context,
         );
       } else if (e.code == 'invalid-credential') {
         displayErrorMessage(
-          AppLocalizations.of(context)!.invalidEmailOrPassword,
+          AppLocalizations
+              .of(context)!
+              .invalidEmailOrPassword,
           context,
         );
       } else if (e.code == 'invalid-email') {
         displayErrorMessage(
-          AppLocalizations.of(context)!.invalidEmail,
+          AppLocalizations
+              .of(context)!
+              .invalidEmail,
           context,
         );
       } else if (e.code == 'user-disabled') {
         displayErrorMessage(
-          AppLocalizations.of(context)!.userDisabled,
+          AppLocalizations
+              .of(context)!
+              .userDisabled,
           context,
         );
       } else if (e.code == 'user-not-found') {
         displayErrorMessage(
-          AppLocalizations.of(context)!.userNotFound,
+          AppLocalizations
+              .of(context)!
+              .userNotFound,
           context,
         );
       } else if (e.code == 'wrong-password') {
         displayErrorMessage(
-          AppLocalizations.of(context)!.wrongPassword,
+          AppLocalizations
+              .of(context)!
+              .wrongPassword,
           context,
         );
       }
@@ -121,7 +137,9 @@ class _LoginPageState extends State<LoginPage> {
 
                 MyTextField(
                   controller: emailController,
-                  hintText: AppLocalizations.of(context)!.email,
+                  hintText: AppLocalizations
+                      .of(context)!
+                      .email,
                   obscureText: false,
                 ),
 
@@ -129,7 +147,9 @@ class _LoginPageState extends State<LoginPage> {
 
                 MyTextField(
                   controller: passwordController,
-                  hintText: AppLocalizations.of(context)!.password,
+                  hintText: AppLocalizations
+                      .of(context)!
+                      .password,
                   obscureText: true,
                 ),
 
@@ -141,7 +161,9 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        AppLocalizations.of(context)!.forgotYourPassword,
+                        AppLocalizations
+                            .of(context)!
+                            .forgotYourPassword,
                         style: const TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
@@ -154,7 +176,9 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 10),
 
                 MyButton(
-                  text: AppLocalizations.of(context)!.signIn,
+                  text: AppLocalizations
+                      .of(context)!
+                      .signIn,
                   onTap: signUserIn,
                 ),
 
@@ -174,7 +198,9 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          AppLocalizations.of(context)!.orContinueWith,
+                          AppLocalizations
+                              .of(context)!
+                              .orContinueWith,
                           style: TextStyle(
                             color: Colors.grey[shade],
                           ),
@@ -208,7 +234,9 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.notAMember,
+                      AppLocalizations
+                          .of(context)!
+                          .notAMember,
                       style: TextStyle(
                         color: Colors.grey[shade],
                       ),
@@ -219,7 +247,9 @@ class _LoginPageState extends State<LoginPage> {
                     GestureDetector(
                       onTap: widget.onTap,
                       child: Text(
-                        AppLocalizations.of(context)!.registerNow,
+                        AppLocalizations
+                            .of(context)!
+                            .registerNow,
                         style: const TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
@@ -241,9 +271,13 @@ class _LoginPageState extends State<LoginPage> {
     String welcomeMessage;
 
     if (randomInt == 1) {
-      welcomeMessage = AppLocalizations.of(context)!.yTho;
+      welcomeMessage = AppLocalizations
+          .of(context)!
+          .yTho;
     } else {
-      welcomeMessage = AppLocalizations.of(context)!.welcomeBack;
+      welcomeMessage = AppLocalizations
+          .of(context)!
+          .welcomeBack;
     }
 
     return welcomeMessage;
